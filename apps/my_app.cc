@@ -3,13 +3,16 @@
 #include "my_app.h"
 
 #include <cinder/app/App.h>
+#include <sqlite_modern_cpp.h>
 
 
 namespace myapp {
 
+const char kDbPath[] = "scoreboard.db";
+
 using cinder::app::KeyEvent;
 
-MyApp::MyApp() { }
+MyApp::MyApp(): leaderboard_{cinder::app::getAssetPath(kDbPath).string()} {}
 
 void MyApp::setup() { }
 
