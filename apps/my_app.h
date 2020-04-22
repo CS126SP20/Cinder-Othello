@@ -3,8 +3,12 @@
 #ifndef FINALPROJECT_APPS_MYAPP_H_
 #define FINALPROJECT_APPS_MYAPP_H_
 
+#include <cinder/Color.h>
 #include <cinder/app/App.h>
-#include <mylibrary/example.h>
+#include <cinder/gl/Texture.h>
+#include <mylibrary/scoreboard.h>
+
+#include <string>
 
 namespace myapp {
 
@@ -18,6 +22,9 @@ class MyApp : public cinder::app::App {
 
  private:
   othello::Scoreboard leaderboard_;
+  //cinder::gl::TextureRef background_;
+  cinder::gl::Texture2dRef background_;
+
 };
 
 }  // namespace myapp

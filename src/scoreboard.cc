@@ -1,6 +1,6 @@
 // Copyright (c) 2020 Kaahan Motwani. All rights reserved.
 
-#include <mylibrary/example.h>
+#include <mylibrary/scoreboard.h>
 
 namespace othello {
 
