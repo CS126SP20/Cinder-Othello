@@ -19,8 +19,10 @@ class MyApp : public cinder::app::App {
   void update() override;
   void draw() override;
   void keyDown(cinder::app::KeyEvent) override;
+  void mouseDown(cinder::app::MouseEvent) override;
 
  private:
+  void drawPieceOnClick();
   othello::Scoreboard leaderboard_;
   //cinder::gl::TextureRef background_;
   cinder::gl::Texture2dRef background_;

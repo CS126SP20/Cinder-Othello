@@ -58,7 +58,7 @@ void MyApp::setup() {
   //cinder::gl::drawLine();
 
 
-  background_ = gl::Texture2d::create(loadImage(loadAsset("othello_board.png")));
+  background_ = gl::Texture2d::create(loadImage(loadAsset("othello_board7.png")));
 
 //  Surface processedImage(( loadImage( loadResource("othello_board.JPG" ) ) ) );
 //  background_ = gl::Texture2d::create( processedImage );
@@ -75,26 +75,97 @@ void MyApp::draw() {
   gl::draw(background_, getWindowBounds());
 
   vec2 center = getWindowCenter();
-  float r = 50;
-  float radius = 40;
+  int r = 45;
+  float radius = 35;
+  int kTileLength = 90;
 
-  gl::color( Color( 1, 1, 1 ) ); // black
+//  for (size_t i = 0; i < 4; i++) {
+//
+//    gl::color( Color( 1, 1, 1 ) ); // white
+//    gl::drawSolidCircle( center + vec2( i*kTileLength + r, r ), radius );
+//
+//  }
+//
+//  for (size_t j = 0; j < 4; j++) {
+//    gl::color( Color( 1, 1, 1 ) ); // white
+//    gl::drawSolidCircle( center + vec2( r, j*kTileLength + r ), radius );
+//  }
+
+//  gl::drawSolidCircle( center + vec2( kTileLength + r, -2*kTileLength + r ), radius );
+//  gl::drawSolidCircle( center + vec2( kTileLength + r, -3*kTileLength + r ), radius );
+//  gl::drawSolidCircle( center + vec2( kTileLength + r, -4*kTileLength + r ), radius );
+  double k = 90;
+//  gl::drawSolidCircle( center + vec2( 0,0), 3 );
+//  gl::drawSolidCircle( center + vec2( k,0), 3 );
+//  gl::drawSolidCircle( center + vec2( -k,0), 3 );
+//  gl::drawSolidCircle( center + vec2( 180,0), 3 );
+//  gl::drawSolidCircle( center + vec2( 0,k), 3 );
+//  gl::drawSolidCircle( center + vec2( 0,-k), 3 );
+//  gl::drawSolidCircle( center + vec2( 0,-2*k), 3 );
+//  gl::drawSolidCircle( center + vec2( 0,2*k), 3 );
+//  gl::drawSolidCircle( center + vec2( 0,-3*k), 3 );
+//  gl::drawSolidCircle( center + vec2( 0,3*k), 3 );
+//  gl::drawSolidCircle( center + vec2( 0,-4*k), 3 );
+
+  gl::color( Color( 1, 1, 1 ) ); // white
   gl::drawSolidCircle( center + vec2( r, r ), radius );
   gl::color( Color( 1, 1, 1 ) );
   gl::drawSolidCircle( center + vec2( -r, -r ), radius );
-  gl::color( Color( 0, 0, 0 ) ); // white
+  gl::color( Color( 0, 0, 0 ) ); // black
   gl::drawSolidCircle( center + vec2( -r, r), radius );
   gl::color( Color( 0, 0, 0 ) );
   gl::drawSolidCircle( center + vec2( r, -r), radius );
 
+//  gl::color( Color( 1, 1, 1 ) ); // black
+//  gl::drawSolidCircle( center + vec2( r, r ), radius );
+//  gl::color( Color( 1, 1, 1 ) );
+//  gl::drawSolidCircle( center + vec2( -r, -r ), radius );
+//  gl::color( Color( 0, 0, 0 ) ); // white
+//  gl::drawSolidCircle( center + vec2( -r, r), radius );
+//  gl::color( Color( 0, 0, 0 ) );
+//  gl::drawSolidCircle( center + vec2( r, -r), radius );
+
+  gl::color(Color(1,1,1));
+
+  drawPieceOnClick();
+
+
 //  const Color color = Color::black();
   //const cinder::vec2 center = getWindowCenter();
-  const cinder::ivec2 size = {500, 50};
-  PrintText("Game Over :(", Color::white(), size, center);
+//  const cinder::ivec2 size = {500, 50};
+//  PrintText("Game Over :(", Color::white(), size, center);
 }
 
 void MyApp::keyDown(KeyEvent event) { }
 
+void MyApp::drawPieceOnClick() {
+  float radius = 35;
+  int kTileSize = 90;
+  int r = 45;
+  int kTileX = 0;
+  int kTileY = 0;
+  vec2 center = getWindowCenter();
 
+  gl::color(Color(1,1,1));
+  gl::drawSolidCircle( vec2(kTileX * kTileSize + r, kTileY * kTileSize + r), radius);
+
+}
+
+void MyApp::mouseDown(cinder::app::MouseEvent event) {
+  float radius = 35;
+  int kTileSize = 90;
+  int r = 45;
+  int kTileX = 0;
+  int kTileY = 0;
+  vec2 center = getWindowCenter();
+  std::cout << event.getX() << std::endl;
+  std::cout << event.getY() << std::endl;
+  if (event.getY() < 90 && event.getX() < 90) {
+    std::cout << "true" << std::endl;
+    std::cout << 97/90 << std::endl; // divide the x-coordinate by 90 to get the x coordinate of the tile and the same for y
+    gl::color(Color(1,1,1));
+    gl::drawSolidCircle( vec2(kTileX * kTileSize + r, kTileY * kTileSize + r), radius);
+  }
+}
 
 }  // namespace myapp
