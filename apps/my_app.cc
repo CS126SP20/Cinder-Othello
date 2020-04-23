@@ -67,17 +67,30 @@ void MyApp::setup() {
 void MyApp::update() { }
 
 void MyApp::draw() {
-  cinder::ip::checkerboard(8, 8, 100, Color::black(), Color::black());
+  //cinder::ip::checkerboard(8, 8, 100, Color::black(), Color::black());
 
   //background_ = gl::Texture2d::create(loadImage(loadAsset("othello_board.png")));
 
   // and in your App's draw()
   gl::draw(background_, getWindowBounds());
 
+  vec2 center = getWindowCenter();
+  float r = 50;
+  float radius = 40;
+
+  gl::color( Color( 1, 1, 1 ) ); // black
+  gl::drawSolidCircle( center + vec2( r, r ), radius );
+  gl::color( Color( 1, 1, 1 ) );
+  gl::drawSolidCircle( center + vec2( -r, -r ), radius );
+  gl::color( Color( 0, 0, 0 ) ); // white
+  gl::drawSolidCircle( center + vec2( -r, r), radius );
+  gl::color( Color( 0, 0, 0 ) );
+  gl::drawSolidCircle( center + vec2( r, -r), radius );
+
 //  const Color color = Color::black();
-//  const cinder::vec2 center = getWindowCenter();
-//  const cinder::ivec2 size = {500, 50};
-//  PrintText("Game Over :(", color, size, center);
+  //const cinder::vec2 center = getWindowCenter();
+  const cinder::ivec2 size = {500, 50};
+  PrintText("Game Over :(", Color::white(), size, center);
 }
 
 void MyApp::keyDown(KeyEvent event) { }
