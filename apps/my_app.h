@@ -10,6 +10,9 @@
 
 #include <string>
 
+using std::vector;
+using std::string;
+
 namespace myapp {
 
 class MyApp : public cinder::app::App {
@@ -23,9 +26,10 @@ class MyApp : public cinder::app::App {
 
  private:
   void drawPieceOnClick();
+  void flipPieces();
   othello::Scoreboard leaderboard_;
-  //cinder::gl::TextureRef background_;
   cinder::gl::Texture2dRef background_;
+  vector<vector<string>> game_board;
 
 };
 

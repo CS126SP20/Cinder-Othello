@@ -54,9 +54,16 @@ void PrintText(const string& text, const C& color, const cinder::ivec2& size,
 MyApp::MyApp(): leaderboard_{cinder::app::getAssetPath(kDbPath).string()} {}
 
 void MyApp::setup() {
-  leaderboard_.AddWinnerToScoreBoard("player1", "player2", 30);
-  //cinder::gl::drawLine();
+  //leaderboard_.AddWinnerToScoreBoard("player1", "player2", 30);
 
+  // Fills game board with empty strings
+  vector<string> v(8, "");
+
+
+  for (size_t i = 0; i < 8; i++) {
+    game_board.push_back(v);
+  }
+  std::cout << game_board[5][5] << std::endl;
 
   background_ = gl::Texture2d::create(loadImage(loadAsset("othello_board7.png")));
 
@@ -79,6 +86,8 @@ void MyApp::draw() {
   float radius = 35;
   int kTileLength = 90;
 
+
+
 //  for (size_t i = 0; i < 4; i++) {
 //
 //    gl::color( Color( 1, 1, 1 ) ); // white
@@ -95,17 +104,7 @@ void MyApp::draw() {
 //  gl::drawSolidCircle( center + vec2( kTileLength + r, -3*kTileLength + r ), radius );
 //  gl::drawSolidCircle( center + vec2( kTileLength + r, -4*kTileLength + r ), radius );
   double k = 90;
-//  gl::drawSolidCircle( center + vec2( 0,0), 3 );
-//  gl::drawSolidCircle( center + vec2( k,0), 3 );
-//  gl::drawSolidCircle( center + vec2( -k,0), 3 );
-//  gl::drawSolidCircle( center + vec2( 180,0), 3 );
-//  gl::drawSolidCircle( center + vec2( 0,k), 3 );
-//  gl::drawSolidCircle( center + vec2( 0,-k), 3 );
-//  gl::drawSolidCircle( center + vec2( 0,-2*k), 3 );
-//  gl::drawSolidCircle( center + vec2( 0,2*k), 3 );
-//  gl::drawSolidCircle( center + vec2( 0,-3*k), 3 );
-//  gl::drawSolidCircle( center + vec2( 0,3*k), 3 );
-//  gl::drawSolidCircle( center + vec2( 0,-4*k), 3 );
+
 
   gl::color( Color( 1, 1, 1 ) ); // white
   gl::drawSolidCircle( center + vec2( r, r ), radius );
@@ -148,6 +147,9 @@ void MyApp::drawPieceOnClick() {
 
   gl::color(Color(1,1,1));
   gl::drawSolidCircle( vec2(kTileX * kTileSize + r, kTileY * kTileSize + r), radius);
+}
+
+void MyApp::flipPieces() {
 
 }
 
