@@ -24,7 +24,9 @@
     - Need to clean up my code and make sure I'm modularizing as I go
     
  - **04/24/2020** Got white piece to show up on the tile that was clicked
- by the user, but only works for white pieces.
- I also added music to the game that plays non-stop.
+ by the user, but only works for white pieces. I also added music to 
+ the game that plays non-stop. Added 
     - Need to figure out issues when I try to change the color of pieces
     to black (the whole screen becomes black)
+    - Need to work on flipping the pieces 
+    - Need to have somewhere to display the user score

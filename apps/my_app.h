@@ -25,14 +25,19 @@ class MyApp : public cinder::app::App {
   void mouseDown(cinder::app::MouseEvent) override;
 
  private:
-  void drawPieceOnClick();
-  void flipPieces();
+  void DrawPieceOnClick();
+  void FlipPieces();
+  void DrawStartingBoard();
   othello::Scoreboard leaderboard_;
   cinder::gl::Texture2dRef background_;
   vector<vector<string>> game_board;
   int x_tile_coordinate_;
   int y_tile_coordinate_;
   bool white_turn_ = false;
+  int kBoardSize = 8;
+  int kTileLength = getWindowBounds().getWidth()/kBoardSize;
+  int kTileCenter = kTileLength/2;
+  int kCirclePieceRadius = 35;
 
 };
 
