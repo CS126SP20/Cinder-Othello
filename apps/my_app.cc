@@ -55,20 +55,20 @@ MyApp::MyApp(): leaderboard_{cinder::app::getAssetPath(kDbPath).string()} {}
 
 void MyApp::setup() {
   //leaderboard_.AddWinnerToScoreBoard("player1", "player2", 30);
-
   // Fills game board with empty strings
   vector<string> v(8, "");
-
 
   for (size_t i = 0; i < 8; i++) {
     game_board.push_back(v);
   }
-  std::cout << game_board[5][5] << std::endl;
+  // Sets the starting 4 pieces to white and black
+  game_board[3][3] = "white";
+  game_board[3][4] = "black";
+  game_board[4][3] = "black";
+  game_board[4][4] = "white";
 
-  background_ = gl::Texture2d::create(loadImage(loadAsset("othello_board7.png")));
-
-//  Surface processedImage(( loadImage( loadResource("othello_board.JPG" ) ) ) );
-//  background_ = gl::Texture2d::create( processedImage );
+  background_ = gl::Texture2d::create(loadImage
+      (loadAsset("othello_board.png")));
 }
 
 void MyApp::update() { }
@@ -145,20 +145,44 @@ void MyApp::drawPieceOnClick() {
   int kTileY = 0;
   vec2 center = getWindowCenter();
 
-  gl::color(Color(1,1,1));
-  gl::drawSolidCircle( vec2(kTileX * kTileSize + r, kTileY * kTileSize + r), radius);
+  if (white_turn_) {
+    gl::color(Color(1,1,1));
+  } else {
+    //gl::color(Color(0,0,0));
+  }
+//  x_tile_coordinate_ = x_tile_coordinate_/kTileSize;
+//  y_tile_coordinate_ = y_tile_coordinate_/kTileSize;
+
+  for (size_t i = 0; i < 8; i++) {
+    for (size_t j = 0; j < 8; j++) {
+      if (game_board[i][j] == "white") {
+        gl::drawSolidCircle( vec2(x_tile_coordinate_ * kTileSize + r, y_tile_coordinate_ * kTileSize + r), radius);
+      }
+    }
+  }
+
+
+
 }
+
 
 void MyApp::flipPieces() {
 
 }
 
 void MyApp::mouseDown(cinder::app::MouseEvent event) {
+  white_turn_ = !white_turn_;
   float radius = 35;
   int kTileSize = 90;
   int r = 45;
   int kTileX = 0;
   int kTileY = 0;
+  x_tile_coordinate_ = event.getX();
+  y_tile_coordinate_ = event.getY();
+  x_tile_coordinate_ = x_tile_coordinate_/kTileSize;
+  y_tile_coordinate_ = y_tile_coordinate_/kTileSize;
+  game_board[x_tile_coordinate_][y_tile_coordinate_] = "white";
+
   vec2 center = getWindowCenter();
   std::cout << event.getX() << std::endl;
   std::cout << event.getY() << std::endl;

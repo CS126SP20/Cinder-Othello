@@ -30,6 +30,9 @@ class MyApp : public cinder::app::App {
   othello::Scoreboard leaderboard_;
   cinder::gl::Texture2dRef background_;
   vector<vector<string>> game_board;
+  int x_tile_coordinate_;
+  int y_tile_coordinate_;
+  bool white_turn_ = false;
 
 };
 
