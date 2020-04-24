@@ -23,10 +23,8 @@
     implement
     - Need to clean up my code and make sure I'm modularizing as I go
     
- - **04/24/2020** Got white piece to show up on the tile that was clicked
- by the user, but only works for white pieces. I also added music to 
- the game that plays non-stop. Added 
-    - Need to figure out issues when I try to change the color of pieces
-    to black (the whole screen becomes black)
-    - Need to work on flipping the pieces 
+ - **04/24/2020** Got white and black pieces to show up on the tile 
+ that was clicked by the user. I also added music to the game 
+ that plays non-stop. 
+    - Need to work on flipping the pieces to make the game more playable
     - Need to have somewhere to display the user score

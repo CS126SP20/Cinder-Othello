@@ -38,6 +38,9 @@ class MyApp : public cinder::app::App {
   int kTileLength = getWindowBounds().getWidth()/kBoardSize;
   int kTileCenter = kTileLength/2;
   int kCirclePieceRadius = 35;
+  double r;
+  double g;
+  double b;
 
 };
 
