@@ -25,5 +25,6 @@
     
  - **04/24/2020** Got white piece to show up on the tile that was clicked
  by the user, but it does not stay at that tile when another tile is clicked.
+ I also added music to the game that plays non-stop.
     - Need to figure out issues when I try to change the color of pieces
     to black (the whole screen becomes black)

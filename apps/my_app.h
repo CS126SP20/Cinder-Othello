@@ -7,7 +7,7 @@
 #include <cinder/app/App.h>
 #include <cinder/gl/Texture.h>
 #include <mylibrary/scoreboard.h>
-
+#include <cinder/audio/Voice.h>
 #include <string>
 
 using std::vector;
