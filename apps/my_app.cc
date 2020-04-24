@@ -166,7 +166,7 @@ void MyApp::drawPieceOnClick() {
   for (size_t i = 0; i < 8; i++) {
     for (size_t j = 0; j < 8; j++) {
       if (game_board[i][j] == "white") {
-        gl::drawSolidCircle( vec2(x_tile_coordinate_ * kTileSize + r, y_tile_coordinate_ * kTileSize + r), radius);
+        gl::drawSolidCircle( vec2(i * kTileSize + r, j * kTileSize + r), radius);
       }
     }
   }
