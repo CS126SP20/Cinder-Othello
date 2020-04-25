@@ -61,18 +61,6 @@ void MyApp::update() {
   if (!music_voice->isPlaying()) { // If the music ended, repeat the music
     music_voice->start();
   }
-
-//  if (white_turn_) {
-//    r = 1;
-//    g = 1;
-//    b = 1;
-//  } else {
-//    r = 0;
-//    g = 0;
-//    b = 0;
-//  }
-
-  //gl::color(Color(r,g,b));
 }
 
 void MyApp::draw() {
@@ -147,48 +135,7 @@ void MyApp::DrawBoard() {
     }
   }
 
-
-//  gl::color( Color( 1, 1, 1 ) ); // white
-//  gl::drawSolidCircle( center + vec2(kTileCenter, kTileCenter),
-//      kCirclePieceRadius);
-//  gl::color( Color( 1, 1, 1 ) );
-//  gl::drawSolidCircle( center + vec2(-kTileCenter, -kTileCenter),
-//      kCirclePieceRadius);
-//  gl::color( Color( 0, 0, 0 ) ); // black
-//  gl::drawSolidCircle( center + vec2(-kTileCenter, kTileCenter),
-//      kCirclePieceRadius);
-//  gl::color( Color( 0, 0, 0 ) );
-//  gl::drawSolidCircle( center + vec2(kTileCenter, -kTileCenter),
-//      kCirclePieceRadius);
 }
-
-void MyApp::DrawPieceOnClick() {
-//  float radius = 35;
-//  int kTileSize = 90;
-//  int r = 45;
-//  int kTileX = 0;
-//  int kTileY = 0;
-  vec2 center = getWindowCenter();
-
-
-//  x_tile_coordinate_ = x_tile_coordinate_/kTileSize;
-//  y_tile_coordinate_ = y_tile_coordinate_/kTileSize;
-
-  for (size_t i = 0; i < 8; i++) {
-    for (size_t j = 0; j < 8; j++) {
-      if (game_board[i][j] == "white" || game_board[i][j] == "black") {
-        gl::drawSolidCircle( vec2(i * kTileLength + kTileCenter,
-            j * kTileLength + kTileCenter), kCirclePieceRadius);
-      }
-    }
-  }
-
-//  const cinder::vec2 center2 = getWindowCenter();
-//  const cinder::ivec2 size = {500, 50};
-//  PrintText("Game Over :(", Color::white(), size, center2);
-
-}
-
 
 void MyApp::mouseDown(cinder::app::MouseEvent event) {
 
@@ -229,16 +176,13 @@ void MyApp::mouseDown(cinder::app::MouseEvent event) {
 
 void MyApp::FlipPieces(int& x_tile_coordinate_, int& y_tile_coordinate_) {
   string lastTurnColor = "black";
-  //string lastTurnColorOpposite = "white";
   if (white_turn_) {
-    // If the last turn was white, pieces need to be flipped to black
     lastTurnColor = "white";
-    //lastTurnColorOpposite = "black";
   }
 
   for (int i = 0; i < 8; i++) {
     for (int j = 0; j < 8; j++) {
-      if (game_board[j][i] == "") {
+      if (game_board[j][i].empty()) {
         std::cout << "space ";
       } else {
         std::cout << game_board[j][i] + " ";
@@ -265,48 +209,34 @@ void MyApp::FlipPieces(int& x_tile_coordinate_, int& y_tile_coordinate_) {
       if (game_board[x][y].empty()) { // Checks for empty string
         break;
       } else if (game_board[x][y] != lastTurnColor) {
-        to_flip.push_back(std::make_pair(x, y)); // Adds the pair of coordinates to to_flip
+        to_flip.emplace_back(x, y); // Adds the pair of coordinates to to_flip
       } else { // == lastTurnColor
         for (const auto& pair : to_flip) {
           game_board[pair.first][pair.second] = lastTurnColor;
         }
         break;
       }
-
     }
     to_flip.clear();
   }
 
-//
-//  int other_x_coord = x_tile_coordinate_;
-//  other_x_coord++;
-//  other_x_coord++;
-//  while (other_x_coord  < kBoardSize && y_tile_coordinate_ < kBoardSize) {
-//    // If there's a piece of the same color more than one spot away,
-//    // check for each piece in between being the opposite color
-//    if (game_board[other_x_coord][y_tile_coordinate_]
-//      == lastTurnColor) {
-//      for (size_t i = 0; i < abs(other_x_coord - x_tile_coordinate_); i++) {
-//        if (other_x_coord > x_tile_coordinate_) {
-//          if (game_board[other_x_coord][y_tile_coordinate_] == lastTurnColorOpposite) {
-//
-//          }
-//          other_x_coord++;
-//        }
-//      }
-//    }
-//    other_x_coord++;
-//  }
-
-//  if (game_board[x_tile_coordinate_ + 1][y_tile_coordinate_ + 1]
-//    == lastTurnColorOpposite) {
-//    game_board[x_tile_coordinate_ + 1][y_tile_coordinate_ + 1] = lastTurnColor;
-//  }
-
+  UpdateScores();
 }
+
 
 bool MyApp::InBounds(int x, int y) {
   return (x >= 0) && (x < kBoardSize) && (y >= 0) && (y < kBoardSize);
+}
+void MyApp::UpdateScores() {
+  for (size_t i = 0; i < kBoardSize; i++) {
+    for (size_t j = 0; j < kBoardSize; j++) {
+      if (game_board[j][i] == "white") {
+        white_score++;
+      } else if (game_board[j][i] == "black") {
+        black_score++;
+      }
+    }
+  }
 }
 
 }  // namespace myapp

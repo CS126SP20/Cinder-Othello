@@ -25,9 +25,9 @@ class MyApp : public cinder::app::App {
   void mouseDown(cinder::app::MouseEvent) override;
 
  private:
-  void DrawPieceOnClick();
   void FlipPieces(int& x_tile_coordinate_, int& y_tile_coordinate_);
   void DrawBoard();
+  void UpdateScores();
   bool InBounds(int x, int y);
   othello::Scoreboard leaderboard_;
   cinder::gl::Texture2dRef background_;
@@ -37,6 +37,8 @@ class MyApp : public cinder::app::App {
   int kTileLength = getWindowBounds().getWidth()/kBoardSize; // Should be 90
   int kTileCenter = kTileLength/2;
   int kCirclePieceRadius = 35;
+  int black_score;
+  int white_score;
   vector<int> x_change{-1, 0, 1, -1, 1, -1, 0, 1};
   vector<int> y_change{-1, -1, -1, 0, 0, 1, 1, 1};
 };

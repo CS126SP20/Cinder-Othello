@@ -25,15 +25,15 @@
     
  - **04/24/2020** Got white and black pieces to show up on the tile 
  that was clicked by the user. I also added music to the game 
- that plays non-stop. 
+ that plays non-stop. Have some pieces flipping, but the algorithm 
+ is still in the development stage.
     - Getting a random bug where the whole screen turns black for 
     some reason; need to find the bug and fix.
     - Need to work on flipping the pieces to make the game more playable
     - Need to have somewhere to display the user score and winner
     
- - **04/25/2020** Fixed the bug of screen turning all black. Have
- some pieces flipping, but the algorithm is still in the 
- development stage.
-    - Need to try to implement the algorithm that appropriately
-    flips pieces; maybe try to modularize into methods based on
-    direction (vertical, horizontal, diagonal)
+ - **04/25/2020** Fixed the bug of screen turning all black. Got 
+ the tile flipping algorithm fully implemented
+    - Need to try to modularize the algorithm into methods to make
+    the code more readable and clean
+    - Look into creating a Logic class, if necessary
