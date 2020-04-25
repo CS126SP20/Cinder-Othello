@@ -249,8 +249,7 @@ void MyApp::FlipPieces(int& x_tile_coordinate_, int& y_tile_coordinate_) {
   std::cout << std::endl;
 
 
-  vector<int> to_flip_x;
-  vector<int> to_flip_y;
+  vector<std::pair<int, int>> to_flip;
 
   for (size_t i = 0; i < x_change.size(); i++) {
     int x = x_tile_coordinate_;
@@ -266,21 +265,16 @@ void MyApp::FlipPieces(int& x_tile_coordinate_, int& y_tile_coordinate_) {
       if (game_board[x][y].empty()) { // Checks for empty string
         break;
       } else if (game_board[x][y] != lastTurnColor) {
-        to_flip_x.push_back(x);
-        to_flip_y.push_back(y);
-        std::cout << to_flip_x[0];
-        std::cout << to_flip_y[0] << std::endl;
-        //to_flip.push_back(std::make_pair(x, y)); // Adds the pair of coordinates to to_flip
+        to_flip.push_back(std::make_pair(x, y)); // Adds the pair of coordinates to to_flip
       } else { // == lastTurnColor
-        for (int coord = 0; coord < to_flip_x.size(); coord++) {
-          game_board[to_flip_x[coord]][to_flip_y[coord]] = lastTurnColor;
+        for (const auto& pair : to_flip) {
+          game_board[pair.first][pair.second] = lastTurnColor;
         }
         break;
       }
 
     }
-    to_flip_x.clear();
-    to_flip_y.clear();
+    to_flip.clear();
   }
 
 //
