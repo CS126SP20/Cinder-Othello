@@ -35,14 +35,13 @@ using cinder::app::KeyEvent;
 MyApp::MyApp(): leaderboard_{cinder::app::getAssetPath(kDbPath).string()} {}
 
 void MyApp::setup() {
-  leaderboard_.AddWinnerToScoreBoard("player1", "player2", 30);
-  // Fills game board with empty strings
+  //leaderboard_.AddWinnerToScoreBoard("player1", "player2", 30);
+  // Fills game board with empty strings initially
   vector<string> v(8, "");
-
   for (size_t i = 0; i < 8; i++) {
     game_board.push_back(v);
   }
-  // Sets the starting 4 pieces to white and black
+  // Sets the starting 4 pieces in the middle of the board to white and black
   game_board[3][3] = "white";
   game_board[3][4] = "black";
   game_board[4][3] = "black";
@@ -54,35 +53,35 @@ void MyApp::setup() {
   audio::SourceFileRef sourceFile =
       audio::load( app::loadAsset( "background.mp3"));
   music_voice = audio::Voice::create(sourceFile);
-  // Start playing audio from file:
+  // Start playing background music audio from file:
   music_voice->start();
 }
 
 void MyApp::update() {
-  if (!music_voice->isPlaying()) {
+  if (!music_voice->isPlaying()) { // If the music ended, repeat the music
     music_voice->start();
   }
 
-  if (white_turn_) {
-    r = 1;
-    g = 1;
-    b = 1;
-  } else {
-    r = 0;
-    g = 0;
-    b = 0;
-  }
+//  if (white_turn_) {
+//    r = 1;
+//    g = 1;
+//    b = 1;
+//  } else {
+//    r = 0;
+//    g = 0;
+//    b = 0;
+//  }
 
   //gl::color(Color(r,g,b));
 }
 
 void MyApp::draw() {
-
-  DrawStartingBoard();
+  gl::clear();
+  gl::draw(background_, getWindowBounds());// Draws the game board
+  DrawBoard();
 
   gl::color(Color(1,1,1));
 
-  //DrawPieceOnClick();
 
 }
 
@@ -108,9 +107,8 @@ void PrintText(const string& text, const C& color, const cinder::ivec2& size,
   cinder::gl::draw(texture, locp);
 }
 
-void MyApp::DrawStartingBoard() {
-  // and in your App's draw()
-  gl::draw(background_, getWindowBounds());
+void MyApp::DrawBoard() {
+
 
   vec2 center = getWindowCenter();
 //  int r = 45;
@@ -135,16 +133,16 @@ void MyApp::DrawStartingBoard() {
 //  gl::drawSolidCircle( center + vec2( kTileLength + r, -2*kTileLength + r ), radius );
 //  gl::drawSolidCircle( center + vec2( kTileLength + r, -3*kTileLength + r ), radius );
 //  gl::drawSolidCircle( center + vec2( kTileLength + r, -4*kTileLength + r ), radius );
-  for (size_t i = 0; i < 8; i++) {
-    for (size_t j = 0; j < 8; j++) {
+  for (size_t i = 0; i < kBoardSize; i++) {
+    for (size_t j = 0; j < kBoardSize; j++) {
+      int xPos = i * kTileLength + kTileCenter;
+      int yPos = j * kTileLength + kTileCenter;
       if (game_board[i][j] == "white") {
         gl::color(Color(1,1,1));
-        gl::drawSolidCircle( vec2(i * kTileLength + kTileCenter,
-                                  j * kTileLength + kTileCenter), kCirclePieceRadius);
+        gl::drawSolidCircle( vec2(xPos, yPos), kCirclePieceRadius);
       } else if (game_board[i][j] == "black") {
         gl::color(Color(0,0,0));
-        gl::drawSolidCircle( vec2(i * kTileLength + kTileCenter,
-                                  j * kTileLength + kTileCenter), kCirclePieceRadius);
+        gl::drawSolidCircle( vec2(xPos, yPos), kCirclePieceRadius);
       }
     }
   }
@@ -192,10 +190,6 @@ void MyApp::DrawPieceOnClick() {
 }
 
 
-void MyApp::FlipPieces() {
-
-}
-
 void MyApp::mouseDown(cinder::app::MouseEvent event) {
 
 //  float radius = 35;
@@ -203,23 +197,22 @@ void MyApp::mouseDown(cinder::app::MouseEvent event) {
 //  int r = 45;
 //  int kTileX = 0;
 //  int kTileY = 0;
-  x_tile_coordinate_ = event.getX();
-  y_tile_coordinate_ = event.getY();
-  x_tile_coordinate_ = x_tile_coordinate_/kTileLength;
-  y_tile_coordinate_ = y_tile_coordinate_/kTileLength;
+  int x_tile_coordinate_ = event.getX();
+  int y_tile_coordinate_ = event.getY();
+
+  // The two lines below divide the x and y coordinates on the board by
+  // 90 (pixel length of each square) to get the corresponding x and y
+  // coordinates on the board (0 to 7)
+  x_tile_coordinate_ = x_tile_coordinate_ / kTileLength;
+  y_tile_coordinate_ = y_tile_coordinate_ / kTileLength;
 
   white_turn_ = !white_turn_;
   if (white_turn_) {
     game_board[x_tile_coordinate_][y_tile_coordinate_] = "white";
-//    r = 1;
-//    g = 1;
-//    b = 1;
   } else {
     game_board[x_tile_coordinate_][y_tile_coordinate_] = "black";
-//    r = 0;
-//    g = 0;
-//    b = 0;
   }
+  FlipPieces(x_tile_coordinate_, y_tile_coordinate_);
 
 
 
@@ -232,6 +225,94 @@ void MyApp::mouseDown(cinder::app::MouseEvent event) {
 //    gl::color(Color(1,1,1));
 //    gl::drawSolidCircle( vec2(kTileX * kTileSize + r, kTileY * kTileSize + r), radius);
 //  }
+}
+
+void MyApp::FlipPieces(int& x_tile_coordinate_, int& y_tile_coordinate_) {
+  string lastTurnColor = "black";
+  //string lastTurnColorOpposite = "white";
+  if (white_turn_) {
+    // If the last turn was white, pieces need to be flipped to black
+    lastTurnColor = "white";
+    //lastTurnColorOpposite = "black";
+  }
+
+  for (int i = 0; i < 8; i++) {
+    for (int j = 0; j < 8; j++) {
+      if (game_board[j][i] == "") {
+        std::cout << "space ";
+      } else {
+        std::cout << game_board[j][i] + " ";
+      }
+    }
+    std::cout << std::endl;
+  }
+  std::cout << std::endl;
+
+
+  vector<int> to_flip_x;
+  vector<int> to_flip_y;
+
+  for (size_t i = 0; i < x_change.size(); i++) {
+    int x = x_tile_coordinate_;
+    int y = y_tile_coordinate_;
+
+    for (int j = 0; j < kBoardSize; j++) {
+      x += x_change[i];
+      y += y_change[i];
+
+      if (!InBounds(x, y)) {
+        break;
+      }
+      if (game_board[x][y].empty()) { // Checks for empty string
+        break;
+      } else if (game_board[x][y] != lastTurnColor) {
+        to_flip_x.push_back(x);
+        to_flip_y.push_back(y);
+        std::cout << to_flip_x[0];
+        std::cout << to_flip_y[0] << std::endl;
+        //to_flip.push_back(std::make_pair(x, y)); // Adds the pair of coordinates to to_flip
+      } else { // == lastTurnColor
+        for (int coord = 0; coord < to_flip_x.size(); coord++) {
+          game_board[to_flip_x[coord]][to_flip_y[coord]] = lastTurnColor;
+        }
+        break;
+      }
+
+    }
+    to_flip_x.clear();
+    to_flip_y.clear();
+  }
+
+//
+//  int other_x_coord = x_tile_coordinate_;
+//  other_x_coord++;
+//  other_x_coord++;
+//  while (other_x_coord  < kBoardSize && y_tile_coordinate_ < kBoardSize) {
+//    // If there's a piece of the same color more than one spot away,
+//    // check for each piece in between being the opposite color
+//    if (game_board[other_x_coord][y_tile_coordinate_]
+//      == lastTurnColor) {
+//      for (size_t i = 0; i < abs(other_x_coord - x_tile_coordinate_); i++) {
+//        if (other_x_coord > x_tile_coordinate_) {
+//          if (game_board[other_x_coord][y_tile_coordinate_] == lastTurnColorOpposite) {
+//
+//          }
+//          other_x_coord++;
+//        }
+//      }
+//    }
+//    other_x_coord++;
+//  }
+
+//  if (game_board[x_tile_coordinate_ + 1][y_tile_coordinate_ + 1]
+//    == lastTurnColorOpposite) {
+//    game_board[x_tile_coordinate_ + 1][y_tile_coordinate_ + 1] = lastTurnColor;
+//  }
+
+}
+
+bool MyApp::InBounds(int x, int y) {
+  return (x >= 0) && (x < kBoardSize) && (y >= 0) && (y < kBoardSize);
 }
 
 }  // namespace myapp

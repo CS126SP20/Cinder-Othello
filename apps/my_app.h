@@ -26,22 +26,19 @@ class MyApp : public cinder::app::App {
 
  private:
   void DrawPieceOnClick();
-  void FlipPieces();
-  void DrawStartingBoard();
+  void FlipPieces(int& x_tile_coordinate_, int& y_tile_coordinate_);
+  void DrawBoard();
+  bool InBounds(int x, int y);
   othello::Scoreboard leaderboard_;
   cinder::gl::Texture2dRef background_;
   vector<vector<string>> game_board;
-  int x_tile_coordinate_;
-  int y_tile_coordinate_;
-  bool white_turn_ = false;
+  bool white_turn_ = true;
   int kBoardSize = 8;
-  int kTileLength = getWindowBounds().getWidth()/kBoardSize;
+  int kTileLength = getWindowBounds().getWidth()/kBoardSize; // Should be 90
   int kTileCenter = kTileLength/2;
   int kCirclePieceRadius = 35;
-  double r;
-  double g;
-  double b;
-
+  vector<int> x_change{-1, 0, 1, -1, 1, -1, 0, 1};
+  vector<int> y_change{-1, -1, -1, 0, 0, 1, 1, 1};
 };
 
 }  // namespace myapp
