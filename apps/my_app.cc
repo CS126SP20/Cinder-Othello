@@ -49,6 +49,8 @@ void MyApp::setup() {
 
   valid_moves = GetValidMoves();
 
+  UpdateScores();
+
   background_ = gl::Texture2d::create(loadImage
       (loadAsset("othello_board.png")));
 
@@ -140,7 +142,11 @@ void MyApp::DrawBoard() {
   for (size_t i = 0; i < valid_moves.size(); i++) {
     int xPos = valid_moves[i].first * kTileLength + kTileCenter;
     int yPos = valid_moves[i].second * kTileLength + kTileCenter;
-    gl::color(Color(.526,.526,.526));
+    if (is_white_turn_) {
+      gl::color(Color(1,1,1));
+    } else {
+      gl::color(Color(0,0,0));
+    }
     gl::drawStrokedCircle(vec2(xPos, yPos), kCirclePieceRadius);
   }
 
@@ -176,6 +182,10 @@ void MyApp::mouseDown(cinder::app::MouseEvent event) {
   }
   is_white_turn_ = !is_white_turn_;
   valid_moves = GetValidMoves();
+
+  if (valid_moves.empty()) {
+    is_white_turn_ = !is_white_turn_;
+  }
 
 
 
@@ -246,6 +256,8 @@ bool MyApp::InBounds(int x, int y) {
 }
 
 void MyApp::UpdateScores() {
+  white_score = 0;
+  black_score = 0;
   for (size_t i = 0; i < kBoardSize; i++) {
     for (size_t j = 0; j < kBoardSize; j++) {
       if (game_board[j][i] == "white") {
@@ -301,8 +313,6 @@ vector<pair<int, int>> MyApp::GetValidMoves() {
     for (size_t j = 0; j < kBoardSize; j++) {
       if (game_board[i][j].empty() && IsMoveValid(reinterpret_cast<int&>(i), reinterpret_cast<int&>(j))) {
         moves.emplace_back(i, j);
-        cout << i;
-        cout << j << endl;
       }
     }
   }
