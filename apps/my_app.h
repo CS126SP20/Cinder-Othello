@@ -12,6 +12,9 @@
 
 using std::vector;
 using std::string;
+using std::pair;
+using std::cout;
+using std::endl;
 
 namespace myapp {
 
@@ -30,6 +33,7 @@ class MyApp : public cinder::app::App {
   void DrawBoard();
   void UpdateScores();
   bool InBounds(int x, int y);
+  vector<pair<int, int>> GetValidMoves(int& x , int& y);
   othello::Scoreboard leaderboard_;
   cinder::gl::Texture2dRef background_;
   vector<vector<string>> game_board;
@@ -42,6 +46,7 @@ class MyApp : public cinder::app::App {
   int white_score;
   vector<int> x_change{-1, 0, 1, -1, 1, -1, 0, 1};
   vector<int> y_change{-1, -1, -1, 0, 0, 1, 1, 1};
+  vector<pair<int, int>> valid_moves;
 };
 
 }  // namespace myapp

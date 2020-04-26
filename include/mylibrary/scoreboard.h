@@ -11,7 +11,8 @@ class Scoreboard {
   // Creates a new leaderboard table if it doesn't already exist.
   explicit Scoreboard(const std::string& db_path);
   // Adds the winner, their score, and the loser to the leaderboard.
-  void AddWinnerToScoreBoard(const std::string& winner, const std::string& loser, int score);
+  void AddWinnerToScoreBoard(const std::string& winner,
+      const std::string& loser, int score);
 
  private:
   sqlite::database db_;

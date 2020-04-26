@@ -155,6 +155,7 @@ void MyApp::mouseDown(cinder::app::MouseEvent event) {
 
   is_white_turn_ = !is_white_turn_;
   if (IsMoveValid(x_tile_coordinate_, y_tile_coordinate_)) {
+    GetValidMoves(x_tile_coordinate_, y_tile_coordinate_);
     if (is_white_turn_) {
       game_board[x_tile_coordinate_][y_tile_coordinate_] = "white";
     } else {
@@ -275,6 +276,20 @@ bool MyApp::IsMoveValid(int& x_tile_coordinate_, int& y_tile_coordinate_) {
     }
   }
   return false;
+}
+
+vector<pair<int, int>> MyApp::GetValidMoves(int& x, int& y) {
+  vector<pair<int, int>> valid_moves;
+  for (size_t i = 0; i < kBoardSize; i++) {
+    for (size_t j = 0; j < kBoardSize; j++) {
+      if (game_board[x][y].empty() && IsMoveValid(x, y)) {
+        valid_moves.emplace_back(x, y);
+        cout << x;
+        cout << y << endl;
+      }
+    }
+  }
+  return valid_moves;
 }
 
 }  // namespace myapp
