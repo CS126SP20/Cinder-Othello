@@ -103,10 +103,13 @@ void MyApp::DrawBoard() {
   vec2 center = getWindowCenter();
 
   const cinder::ivec2 size = {500, 50};
-  const Color color = Color::white();
+  const Color green = Color(0,1,0);
+  const string white_score_text = "White: " + std::to_string(white_score);
+  const string black_score_text = "Black: " + std::to_string(black_score);
 
-  PrintText(std::to_string(white_score), color, size, vec2(860, 50));
-  PrintText(std::to_string(black_score), color, size, vec2(860, 150));
+  PrintText(white_score_text, green, size, vec2(860, 50));
+
+  PrintText(black_score_text, green, size, vec2(860, 150));
 
   for (size_t i = 0; i < kBoardSize; i++) {
     for (size_t j = 0; j < kBoardSize; j++) {
@@ -163,6 +166,7 @@ void MyApp::mouseDown(cinder::app::MouseEvent event) {
 
   if (valid_moves.empty()) {
     is_white_turn_ = !is_white_turn_;
+    valid_moves = GetValidMoves();
   }
 
 }
@@ -236,9 +240,9 @@ void MyApp::UpdateScores() {
   if (IsGameOver()) {
     cout << "game over" << endl;
     const cinder::ivec2 size = {500, 50};
-    const Color color = Color::white();
+    const Color green = Color(0,1,0);
 
-    PrintText("Game Over :(", color, size, vec2(860, 50));
+    PrintText("Game Over :(", green, size, vec2(860, 350));
   }
 }
 

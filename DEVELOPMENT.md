@@ -53,5 +53,8 @@
  turn becomes the other player's.
     - Need to add method to check for game over and add winner to 
     SQL database
+    - Need to add a panel on the side to display scores and other
+    information
+    - Add sound when player moves
     - Need to start updating the README
     
