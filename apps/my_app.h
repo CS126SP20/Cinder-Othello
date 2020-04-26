@@ -40,11 +40,12 @@ class MyApp : public cinder::app::App {
   vector<vector<string>> game_board;
   bool is_white_turn_ = false;
   int kBoardSize = 8;
+  int kBoardBounds = 720;
   int kTileLength = getWindowBounds().getHeight()/kBoardSize; // Should be 90
   int kTileCenter = kTileLength/2;
   int kCirclePieceRadius = 35;
-  int black_score;
-  int white_score;
+  int black_score = 2;
+  int white_score = 2;
   vector<int> x_change{-1, 0, 1, -1, 1, -1, 0, 1};
   vector<int> y_change{-1, -1, -1, 0, 0, 1, 1, 1};
   vector<pair<int, int>> valid_moves;

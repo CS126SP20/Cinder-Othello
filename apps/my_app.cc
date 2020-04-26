@@ -69,14 +69,12 @@ void MyApp::update() {
 
 void MyApp::draw() {
   gl::clear();
-  const Rectf board_bounds(0, 0, 720, 720);
+  const Rectf board_bounds(0, 0, kBoardBounds, kBoardBounds);
   gl::draw(background_, board_bounds);// Draws the game board
 
   DrawBoard();
 
   gl::color(Color(1,1,1));
-
-
 }
 
 void MyApp::keyDown(KeyEvent event) { }
@@ -118,9 +116,9 @@ void MyApp::DrawBoard() {
     }
   }
 
-  for (size_t i = 0; i < valid_moves.size(); i++) {
-    int xPos = valid_moves[i].first * kTileLength + kTileCenter;
-    int yPos = valid_moves[i].second * kTileLength + kTileCenter;
+  for (auto& valid_move : valid_moves) {
+    int xPos = valid_move.first * kTileLength + kTileCenter;
+    int yPos = valid_move.second * kTileLength + kTileCenter;
     if (is_white_turn_) {
       gl::color(Color(1,1,1));
     } else {
@@ -133,11 +131,6 @@ void MyApp::DrawBoard() {
 
 void MyApp::mouseDown(cinder::app::MouseEvent event) {
 
-//  float radius = 35;
-//  int kTileSize = 90;
-//  int r = 45;
-//  int kTileX = 0;
-//  int kTileY = 0;
   int x_tile_coordinate_ = event.getX();
   int y_tile_coordinate_ = event.getY();
 
@@ -166,18 +159,6 @@ void MyApp::mouseDown(cinder::app::MouseEvent event) {
     is_white_turn_ = !is_white_turn_;
   }
 
-
-
-
-//  vec2 center = getWindowCenter();
-//  std::cout << event.getX() << std::endl;
-//  std::cout << event.getY() << std::endl;
-//  if (event.getY() < 90 && event.getX() < 90) {
-//    std::cout << "true" << std::endl;
-//    std::cout << 97/90 << std::endl; // divide the x-coordinate by 90 to get the x coordinate of the tile and the same for y
-//    gl::color(Color(1,1,1));
-//    gl::drawSolidCircle( vec2(kTileX * kTileSize + r, kTileY * kTileSize + r), radius);
-//  }
 }
 
 void MyApp::FlipPieces(int& x_tile_coordinate_, int& y_tile_coordinate_) {
@@ -257,6 +238,9 @@ void MyApp::UpdateScores() {
 }
 
 bool MyApp::IsMoveValid(int& x_tile_coordinate_, int& y_tile_coordinate_) {
+  if (!InBounds(x_tile_coordinate_, y_tile_coordinate_)) {
+    return false;
+  }
   string last_turn_color = "black";
   if (is_white_turn_) {
     last_turn_color = "white";
@@ -298,7 +282,8 @@ vector<pair<int, int>> MyApp::GetValidMoves() {
   vector<pair<int, int>> moves;
   for (size_t i = 0; i < kBoardSize; i++) {
     for (size_t j = 0; j < kBoardSize; j++) {
-      if (game_board[i][j].empty() && IsMoveValid(reinterpret_cast<int&>(i), reinterpret_cast<int&>(j))) {
+      if (game_board[i][j].empty() && IsMoveValid(reinterpret_cast<int&>(i),
+          reinterpret_cast<int&>(j))) {
         moves.emplace_back(i, j);
       }
     }
