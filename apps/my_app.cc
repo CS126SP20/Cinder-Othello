@@ -35,7 +35,6 @@ using cinder::app::KeyEvent;
 MyApp::MyApp(): leaderboard_{cinder::app::getAssetPath(kDbPath).string()} {}
 
 void MyApp::setup() {
-  //leaderboard_.AddWinnerToScoreBoard("player1", "player2", 30);
   // Fills game board with empty strings initially
   vector<string> v(8, "");
   for (size_t i = 0; i < 8; i++) {
@@ -100,7 +99,6 @@ void PrintText(const string& text, const C& color, const cinder::ivec2& size,
 }
 
 void MyApp::DrawBoard() {
-  //vec2 center = getWindowCenter();
   for (size_t i = 0; i < kBoardSize; i++) {
     for (size_t j = 0; j < kBoardSize; j++) {
       int xPos = i * kTileLength + kTileCenter;
@@ -286,30 +284,39 @@ vector<pair<int, int>> MyApp::GetValidMoves() {
 bool MyApp::IsGameOver() {
   return (white_score + black_score == 6);
 }
+
 void MyApp::DrawScoresAndText() {
   const cinder::ivec2 size = {500, 50};
   const Color green = Color(board_r, board_g, board_b);
   const string white_score_text = "White: " + std::to_string(white_score);
   const string black_score_text = "Black: " + std::to_string(black_score);
-
   PrintText(white_score_text, green, size, vec2(860, 50));
-
   PrintText(black_score_text, green, size, vec2(860, 150));
 
   if (IsGameOver()) {
     string winner = GetWinner();
-    PrintText("Game Over, " + winner, green, size,
-        vec2(860, 350));
+    if (winner == "tie") {
+      leaderboard_.AddWinnerToScoreBoard("white", "black",
+          white_score);
+      PrintText("Game Over, it's a tie!", green, size,
+                vec2(860, 350));
+    } else {
+      string loser = (winner == "white") ? "black" : "white";
+      int winner_score = (winner == "white") ? white_score : black_score;
+      leaderboard_.AddWinnerToScoreBoard(winner, loser, winner_score);
+      PrintText("Game Over, " + winner + " wins!", green, size,
+                vec2(860, 350));
+    }
   }
 }
 
 string MyApp::GetWinner() {
   if (white_score > black_score) {
-    return "White Wins!";
+    return "white";
   } else if (white_score < black_score) {
-    return "Black Wins!";
+    return "black";
   }
-  return "It's a Tie!";
+  return "tie";
 }
 
 }  // namespace myapp
