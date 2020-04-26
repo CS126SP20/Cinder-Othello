@@ -12,7 +12,7 @@
    currently getting errors
    
  - **04/22/20** Got game board png to become visible on the screen and 
- learned how to display circles for the game.
+ learned how to display circles for the game
     - Need to figure out how to place circles at certain spots on the board
     when the player clicks
     
@@ -47,4 +47,11 @@
  can only place pieces where the move is valid.
     - I want to next display pieces on the board that are valid moves 
     for the user
+    
+ - **04/27/2020** Successfully added method to display valid moves for 
+ users. Added functionality so that if there are no valid moves, the 
+ turn becomes the other player's.
+    - Need to add method to check for game over and add winner to 
+    SQL database
+    - Need to start updating the README
     

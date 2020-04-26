@@ -267,6 +267,14 @@ void MyApp::UpdateScores() {
       }
     }
   }
+  if (IsGameOver()) {
+    cout << "game over" << endl;
+//    const cinder::vec2 center = getWindowCenter();
+//    const cinder::ivec2 size = {500, 50};
+//    const Color color = Color::white();
+//
+//    PrintText("Game Over :(", color, size, center);
+  }
 }
 
 bool MyApp::IsMoveValid(int& x_tile_coordinate_, int& y_tile_coordinate_) {
@@ -317,6 +325,10 @@ vector<pair<int, int>> MyApp::GetValidMoves() {
     }
   }
   return moves;
+}
+
+bool MyApp::IsGameOver() {
+  return (white_score + black_score == (kBoardSize * kBoardSize));
 }
 
 }  // namespace myapp

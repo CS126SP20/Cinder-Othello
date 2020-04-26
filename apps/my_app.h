@@ -33,6 +33,7 @@ class MyApp : public cinder::app::App {
   void DrawBoard();
   void UpdateScores();
   bool InBounds(int x, int y);
+  bool IsGameOver();
   vector<pair<int, int>> GetValidMoves();
   othello::Scoreboard leaderboard_;
   cinder::gl::Texture2dRef background_;
