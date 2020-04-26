@@ -40,7 +40,7 @@ class MyApp : public cinder::app::App {
   vector<vector<string>> game_board;
   bool is_white_turn_ = false;
   int kBoardSize = 8;
-  int kTileLength = getWindowBounds().getWidth()/kBoardSize; // Should be 90
+  int kTileLength = getWindowBounds().getHeight()/kBoardSize; // Should be 90
   int kTileCenter = kTileLength/2;
   int kCirclePieceRadius = 35;
   int black_score;

@@ -69,7 +69,9 @@ void MyApp::update() {
 
 void MyApp::draw() {
   gl::clear();
-  gl::draw(background_, getWindowBounds());// Draws the game board
+  const Rectf board_bounds(0, 0, 720, 720);
+  gl::draw(background_, board_bounds);// Draws the game board
+
   DrawBoard();
 
   gl::color(Color(1,1,1));
@@ -100,31 +102,8 @@ void PrintText(const string& text, const C& color, const cinder::ivec2& size,
 }
 
 void MyApp::DrawBoard() {
-
-
   vec2 center = getWindowCenter();
-//  int r = 45;
-//  float radius = 35;
-  //int kTileLength = 90;
 
-
-
-
-//  for (size_t i = 0; i < 4; i++) {
-//
-//    gl::color( Color( 1, 1, 1 ) ); // white
-//    gl::drawSolidCircle( center + vec2( i*kTileLength + r, r ), radius );
-//
-//  }
-//
-//  for (size_t j = 0; j < 4; j++) {
-//    gl::color( Color( 1, 1, 1 ) ); // white
-//    gl::drawSolidCircle( center + vec2( r, j*kTileLength + r ), radius );
-//  }
-
-//  gl::drawSolidCircle( center + vec2( kTileLength + r, -2*kTileLength + r ), radius );
-//  gl::drawSolidCircle( center + vec2( kTileLength + r, -3*kTileLength + r ), radius );
-//  gl::drawSolidCircle( center + vec2( kTileLength + r, -4*kTileLength + r ), radius );
   for (size_t i = 0; i < kBoardSize; i++) {
     for (size_t j = 0; j < kBoardSize; j++) {
       int xPos = i * kTileLength + kTileCenter;
