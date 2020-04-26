@@ -71,8 +71,8 @@ void MyApp::draw() {
   gl::clear();
   const Rectf board_bounds(0, 0, kBoardBounds, kBoardBounds);
   gl::draw(background_, board_bounds);// Draws the game board
-
   DrawBoard();
+  DrawScoresAndText();
 
   gl::color(Color(1,1,1));
 }
@@ -100,17 +100,7 @@ void PrintText(const string& text, const C& color, const cinder::ivec2& size,
 }
 
 void MyApp::DrawBoard() {
-  vec2 center = getWindowCenter();
-
-  const cinder::ivec2 size = {500, 50};
-  const Color green = Color(0,1,0);
-  const string white_score_text = "White: " + std::to_string(white_score);
-  const string black_score_text = "Black: " + std::to_string(black_score);
-
-  PrintText(white_score_text, green, size, vec2(860, 50));
-
-  PrintText(black_score_text, green, size, vec2(860, 150));
-
+  //vec2 center = getWindowCenter();
   for (size_t i = 0; i < kBoardSize; i++) {
     for (size_t j = 0; j < kBoardSize; j++) {
       int xPos = i * kTileLength + kTileCenter;
@@ -237,13 +227,6 @@ void MyApp::UpdateScores() {
       }
     }
   }
-  if (IsGameOver()) {
-    cout << "game over" << endl;
-    const cinder::ivec2 size = {500, 50};
-    const Color green = Color(0,1,0);
-
-    PrintText("Game Over :(", green, size, vec2(860, 350));
-  }
 }
 
 bool MyApp::IsMoveValid(int& x_tile_coordinate_, int& y_tile_coordinate_) {
@@ -302,6 +285,20 @@ vector<pair<int, int>> MyApp::GetValidMoves() {
 
 bool MyApp::IsGameOver() {
   return (white_score + black_score == (kBoardSize * kBoardSize));
+}
+void MyApp::DrawScoresAndText() {
+  const cinder::ivec2 size = {500, 50};
+  const Color green = Color(0,1,0);
+  const string white_score_text = "White: " + std::to_string(white_score);
+  const string black_score_text = "Black: " + std::to_string(black_score);
+
+  PrintText(white_score_text, green, size, vec2(860, 50));
+
+  PrintText(black_score_text, green, size, vec2(860, 150));
+
+  if (IsGameOver()) {
+    PrintText("Game Over :(", green, size, vec2(860, 350));
+  }
 }
 
 }  // namespace myapp
