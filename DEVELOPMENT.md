@@ -33,7 +33,17 @@
     - Need to have somewhere to display the user score and winner
     
  - **04/25/2020** Fixed the bug of screen turning all black. Got 
- the tile flipping algorithm fully implemented
-    - Need to try to modularize the algorithm into methods to make
-    the code more readable and clean
+ the tile flipping algorithm fully implemented. Also added method
+ to calculate the player scores.
+    - Need to try to modularize the tile flipping 
+    algorithm into methods to make the code more readable and clean
+    - Next step is to add a method that checks for valid moves
+    and allows the user to see what those valid moves are
     - Look into creating a Logic class, if necessary
+    - Need to look into how I want to display scores, whose turn
+    it is, etc.
+    
+ - **04/26/2020** Added method to check for valid move and player
+ can only place pieces where the move is valid.
+    - I want to next display pieces on the board that are valid moves 
+    for the user

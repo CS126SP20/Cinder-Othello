@@ -26,13 +26,14 @@ class MyApp : public cinder::app::App {
 
  private:
   void FlipPieces(int& x_tile_coordinate_, int& y_tile_coordinate_);
+  bool IsMoveValid(int& x_tile_coordinate_, int& y_tile_coordinate_);
   void DrawBoard();
   void UpdateScores();
   bool InBounds(int x, int y);
   othello::Scoreboard leaderboard_;
   cinder::gl::Texture2dRef background_;
   vector<vector<string>> game_board;
-  bool white_turn_ = true;
+  bool is_white_turn_ = true;
   int kBoardSize = 8;
   int kTileLength = getWindowBounds().getWidth()/kBoardSize; // Should be 90
   int kTileCenter = kTileLength/2;

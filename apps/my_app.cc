@@ -153,13 +153,18 @@ void MyApp::mouseDown(cinder::app::MouseEvent event) {
   x_tile_coordinate_ = x_tile_coordinate_ / kTileLength;
   y_tile_coordinate_ = y_tile_coordinate_ / kTileLength;
 
-  white_turn_ = !white_turn_;
-  if (white_turn_) {
-    game_board[x_tile_coordinate_][y_tile_coordinate_] = "white";
+  is_white_turn_ = !is_white_turn_;
+  if (IsMoveValid(x_tile_coordinate_, y_tile_coordinate_)) {
+    if (is_white_turn_) {
+      game_board[x_tile_coordinate_][y_tile_coordinate_] = "white";
+    } else {
+      game_board[x_tile_coordinate_][y_tile_coordinate_] = "black";
+    }
+    FlipPieces(x_tile_coordinate_, y_tile_coordinate_);
   } else {
-    game_board[x_tile_coordinate_][y_tile_coordinate_] = "black";
+    is_white_turn_ = !is_white_turn_;
   }
-  FlipPieces(x_tile_coordinate_, y_tile_coordinate_);
+
 
 
 
@@ -176,21 +181,21 @@ void MyApp::mouseDown(cinder::app::MouseEvent event) {
 
 void MyApp::FlipPieces(int& x_tile_coordinate_, int& y_tile_coordinate_) {
   string lastTurnColor = "black";
-  if (white_turn_) {
+  if (is_white_turn_) {
     lastTurnColor = "white";
   }
-
-  for (int i = 0; i < 8; i++) {
-    for (int j = 0; j < 8; j++) {
-      if (game_board[j][i].empty()) {
-        std::cout << "space ";
-      } else {
-        std::cout << game_board[j][i] + " ";
-      }
-    }
-    std::cout << std::endl;
-  }
-  std::cout << std::endl;
+//  prints the board
+//  for (int i = 0; i < 8; i++) {
+//    for (int j = 0; j < 8; j++) {
+//      if (game_board[j][i].empty()) {
+//        std::cout << "space ";
+//      } else {
+//        std::cout << game_board[j][i] + " ";
+//      }
+//    }
+//    std::cout << std::endl;
+//  }
+//  std::cout << std::endl;
 
 
   vector<std::pair<int, int>> to_flip;
@@ -227,6 +232,7 @@ void MyApp::FlipPieces(int& x_tile_coordinate_, int& y_tile_coordinate_) {
 bool MyApp::InBounds(int x, int y) {
   return (x >= 0) && (x < kBoardSize) && (y >= 0) && (y < kBoardSize);
 }
+
 void MyApp::UpdateScores() {
   for (size_t i = 0; i < kBoardSize; i++) {
     for (size_t j = 0; j < kBoardSize; j++) {
@@ -237,6 +243,38 @@ void MyApp::UpdateScores() {
       }
     }
   }
+}
+
+bool MyApp::IsMoveValid(int& x_tile_coordinate_, int& y_tile_coordinate_) {
+  string lastTurnColor = "black";
+  if (is_white_turn_) {
+    lastTurnColor = "white";
+  }
+
+  for (size_t i = 0; i < x_change.size(); i++) {
+    bool is_opposite_color_adjacent = false;
+    int x = x_tile_coordinate_;
+    int y = y_tile_coordinate_;
+
+    for (int j = 0; j < kBoardSize; j++) {
+      x += x_change[i];
+      y += y_change[i];
+
+      if (!InBounds(x, y)) {
+        break;
+      }
+      if (game_board[x][y].empty()) { // Checks for empty string
+        break;
+      } else if (game_board[x][y] != lastTurnColor) {
+        is_opposite_color_adjacent = true;
+      } else if (is_opposite_color_adjacent) {
+        return true;
+      } else {
+        break;
+      }
+    }
+  }
+  return false;
 }
 
 }  // namespace myapp
