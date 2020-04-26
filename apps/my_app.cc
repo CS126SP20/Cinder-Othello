@@ -137,6 +137,13 @@ void MyApp::DrawBoard() {
     }
   }
 
+  for (size_t i = 0; i < valid_moves.size(); i++) {
+    int xPos = valid_moves[i].first * kTileLength + kTileCenter;
+    int yPos = valid_moves[i].second * kTileLength + kTileCenter;
+    gl::color(Color(.526,.526,.526));
+    gl::drawStrokedCircle(vec2(xPos, yPos), kCirclePieceRadius);
+  }
+
 }
 
 void MyApp::mouseDown(cinder::app::MouseEvent event) {
