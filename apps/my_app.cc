@@ -47,6 +47,8 @@ void MyApp::setup() {
   game_board[4][3] = "black";
   game_board[4][4] = "white";
 
+  valid_moves = GetValidMoves();
+
   background_ = gl::Texture2d::create(loadImage
       (loadAsset("othello_board.png")));
 
@@ -153,9 +155,9 @@ void MyApp::mouseDown(cinder::app::MouseEvent event) {
   x_tile_coordinate_ = x_tile_coordinate_ / kTileLength;
   y_tile_coordinate_ = y_tile_coordinate_ / kTileLength;
 
-  is_white_turn_ = !is_white_turn_;
+//  is_white_turn_ = !is_white_turn_;
   if (IsMoveValid(x_tile_coordinate_, y_tile_coordinate_)) {
-    GetValidMoves(x_tile_coordinate_, y_tile_coordinate_);
+    valid_moves.clear();
     if (is_white_turn_) {
       game_board[x_tile_coordinate_][y_tile_coordinate_] = "white";
     } else {
@@ -165,6 +167,8 @@ void MyApp::mouseDown(cinder::app::MouseEvent event) {
   } else {
     is_white_turn_ = !is_white_turn_;
   }
+  is_white_turn_ = !is_white_turn_;
+  valid_moves = GetValidMoves();
 
 
 
@@ -181,9 +185,9 @@ void MyApp::mouseDown(cinder::app::MouseEvent event) {
 }
 
 void MyApp::FlipPieces(int& x_tile_coordinate_, int& y_tile_coordinate_) {
-  string lastTurnColor = "black";
+  string last_turn_color = "black";
   if (is_white_turn_) {
-    lastTurnColor = "white";
+    last_turn_color = "white";
   }
 //  prints the board
 //  for (int i = 0; i < 8; i++) {
@@ -214,11 +218,11 @@ void MyApp::FlipPieces(int& x_tile_coordinate_, int& y_tile_coordinate_) {
       }
       if (game_board[x][y].empty()) { // Checks for empty string
         break;
-      } else if (game_board[x][y] != lastTurnColor) {
+      } else if (game_board[x][y] != last_turn_color) {
         to_flip.emplace_back(x, y); // Adds the pair of coordinates to to_flip
       } else { // == lastTurnColor
         for (const auto& pair : to_flip) {
-          game_board[pair.first][pair.second] = lastTurnColor;
+          game_board[pair.first][pair.second] = last_turn_color;
         }
         break;
       }
@@ -247,9 +251,15 @@ void MyApp::UpdateScores() {
 }
 
 bool MyApp::IsMoveValid(int& x_tile_coordinate_, int& y_tile_coordinate_) {
-  string lastTurnColor = "black";
+  string last_turn_color = "black";
   if (is_white_turn_) {
-    lastTurnColor = "white";
+    last_turn_color = "white";
+  }
+
+  // If there's already a piece at that spot on the board, it is not
+  // possible for it to be a valid move.
+  if (!game_board[x_tile_coordinate_][y_tile_coordinate_].empty()) {
+    return false;
   }
 
   for (size_t i = 0; i < x_change.size(); i++) {
@@ -266,7 +276,7 @@ bool MyApp::IsMoveValid(int& x_tile_coordinate_, int& y_tile_coordinate_) {
       }
       if (game_board[x][y].empty()) { // Checks for empty string
         break;
-      } else if (game_board[x][y] != lastTurnColor) {
+      } else if (game_board[x][y] != last_turn_color) {
         is_opposite_color_adjacent = true;
       } else if (is_opposite_color_adjacent) {
         return true;
@@ -278,18 +288,18 @@ bool MyApp::IsMoveValid(int& x_tile_coordinate_, int& y_tile_coordinate_) {
   return false;
 }
 
-vector<pair<int, int>> MyApp::GetValidMoves(int& x, int& y) {
-  vector<pair<int, int>> valid_moves;
+vector<pair<int, int>> MyApp::GetValidMoves() {
+  vector<pair<int, int>> moves;
   for (size_t i = 0; i < kBoardSize; i++) {
     for (size_t j = 0; j < kBoardSize; j++) {
-      if (game_board[x][y].empty() && IsMoveValid(x, y)) {
-        valid_moves.emplace_back(x, y);
-        cout << x;
-        cout << y << endl;
+      if (game_board[i][j].empty() && IsMoveValid(reinterpret_cast<int&>(i), reinterpret_cast<int&>(j))) {
+        moves.emplace_back(i, j);
+        cout << i;
+        cout << j << endl;
       }
     }
   }
-  return valid_moves;
+  return moves;
 }
 
 }  // namespace myapp

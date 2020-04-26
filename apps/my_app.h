@@ -33,11 +33,11 @@ class MyApp : public cinder::app::App {
   void DrawBoard();
   void UpdateScores();
   bool InBounds(int x, int y);
-  vector<pair<int, int>> GetValidMoves(int& x , int& y);
+  vector<pair<int, int>> GetValidMoves();
   othello::Scoreboard leaderboard_;
   cinder::gl::Texture2dRef background_;
   vector<vector<string>> game_board;
-  bool is_white_turn_ = true;
+  bool is_white_turn_ = false;
   int kBoardSize = 8;
   int kTileLength = getWindowBounds().getWidth()/kBoardSize; // Should be 90
   int kTileCenter = kTileLength/2;
