@@ -102,6 +102,12 @@ void PrintText(const string& text, const C& color, const cinder::ivec2& size,
 void MyApp::DrawBoard() {
   vec2 center = getWindowCenter();
 
+  const cinder::ivec2 size = {500, 50};
+  const Color color = Color::white();
+
+  PrintText(std::to_string(white_score), color, size, vec2(860, 50));
+  PrintText(std::to_string(black_score), color, size, vec2(860, 150));
+
   for (size_t i = 0; i < kBoardSize; i++) {
     for (size_t j = 0; j < kBoardSize; j++) {
       int xPos = i * kTileLength + kTileCenter;
@@ -229,11 +235,10 @@ void MyApp::UpdateScores() {
   }
   if (IsGameOver()) {
     cout << "game over" << endl;
-//    const cinder::vec2 center = getWindowCenter();
-//    const cinder::ivec2 size = {500, 50};
-//    const Color color = Color::white();
-//
-//    PrintText("Game Over :(", color, size, center);
+    const cinder::ivec2 size = {500, 50};
+    const Color color = Color::white();
+
+    PrintText("Game Over :(", color, size, vec2(860, 50));
   }
 }
 
