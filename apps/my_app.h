@@ -35,6 +35,7 @@ class MyApp : public cinder::app::App {
   bool InBounds(int x, int y);
   bool IsGameOver();
   void DrawScoresAndText();
+  string GetWinner();
   vector<pair<int, int>> GetValidMoves();
   othello::Scoreboard leaderboard_;
   cinder::gl::Texture2dRef background_;
@@ -47,6 +48,9 @@ class MyApp : public cinder::app::App {
   int kCirclePieceRadius = 35;
   int black_score = 2;
   int white_score = 2;
+  float board_r = 46.0 / 255.0;
+  float board_g = 174.0 /255.0;
+  float board_b = 82.0 / 255.0;
   vector<int> x_change{-1, 0, 1, -1, 1, -1, 0, 1};
   vector<int> y_change{-1, -1, -1, 0, 0, 1, 1, 1};
   vector<pair<int, int>> valid_moves;

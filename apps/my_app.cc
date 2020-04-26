@@ -86,7 +86,7 @@ void PrintText(const string& text, const C& color, const cinder::ivec2& size,
 
   auto box = TextBox()
       .alignment(TextBox::CENTER)
-      .font(cinder::Font(kNormalFont, 30))
+      .font(cinder::Font(kNormalFont, 24))
       .size(size)
       .color(color)
       .backgroundColor(ColorA(0, 0, 0, 0))
@@ -284,11 +284,11 @@ vector<pair<int, int>> MyApp::GetValidMoves() {
 }
 
 bool MyApp::IsGameOver() {
-  return (white_score + black_score == (kBoardSize * kBoardSize));
+  return (white_score + black_score == 6);
 }
 void MyApp::DrawScoresAndText() {
   const cinder::ivec2 size = {500, 50};
-  const Color green = Color(0,1,0);
+  const Color green = Color(board_r, board_g, board_b);
   const string white_score_text = "White: " + std::to_string(white_score);
   const string black_score_text = "Black: " + std::to_string(black_score);
 
@@ -297,8 +297,19 @@ void MyApp::DrawScoresAndText() {
   PrintText(black_score_text, green, size, vec2(860, 150));
 
   if (IsGameOver()) {
-    PrintText("Game Over :(", green, size, vec2(860, 350));
+    string winner = GetWinner();
+    PrintText("Game Over, " + winner, green, size,
+        vec2(860, 350));
   }
+}
+
+string MyApp::GetWinner() {
+  if (white_score > black_score) {
+    return "White Wins!";
+  } else if (white_score < black_score) {
+    return "Black Wins!";
+  }
+  return "It's a Tie!";
 }
 
 }  // namespace myapp
