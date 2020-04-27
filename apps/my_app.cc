@@ -160,8 +160,25 @@ void MyApp::mouseDown(cinder::app::MouseEvent event) {
     valid_moves = GetValidMoves();
   }
 
+
+
+  const Color green = Color(board_r, board_g, board_b);
+  const cinder::ivec2 size = {500, 50};
   if (IsGameOver()) {
     PlaySound("game over");
+    string winner = GetWinner();
+    if (winner == "tie") {
+      leaderboard_.AddWinnerToScoreBoard("tie", "tie",
+                                         white_score);
+      PrintText("Game Over, it's a tie!", green, size,
+                vec2(860, 350));
+    } else {
+      string loser = (winner == "white") ? "black" : "white";
+      int winner_score = (winner == "white") ? white_score : black_score;
+      leaderboard_.AddWinnerToScoreBoard(winner, loser, winner_score);
+      PrintText("Game Over, " + winner + " wins!", green, size,
+                vec2(860, 350));
+    }
   }
 
 }
@@ -289,21 +306,21 @@ void MyApp::DrawScoresAndText() {
   PrintText(white_score_text, green, size, vec2(860, 150));
   PrintText(black_score_text, green, size, vec2(860, 250));
 
-  if (IsGameOver()) {
-    string winner = GetWinner();
-    if (winner == "tie") {
-      leaderboard_.AddWinnerToScoreBoard("tie", "tie",
-          white_score);
-      PrintText("Game Over, it's a tie!", green, size,
-                vec2(860, 350));
-    } else {
-      string loser = (winner == "white") ? "black" : "white";
-      int winner_score = (winner == "white") ? white_score : black_score;
-      leaderboard_.AddWinnerToScoreBoard(winner, loser, winner_score);
-      PrintText("Game Over, " + winner + " wins!", green, size,
-                vec2(860, 350));
-    }
-  }
+//  if (IsGameOver()) {
+//    string winner = GetWinner();
+//    if (winner == "tie") {
+//      leaderboard_.AddWinnerToScoreBoard("tie", "tie",
+//          white_score);
+//      PrintText("Game Over, it's a tie!", green, size,
+//                vec2(860, 350));
+//    } else {
+//      string loser = (winner == "white") ? "black" : "white";
+//      int winner_score = (winner == "white") ? white_score : black_score;
+//      leaderboard_.AddWinnerToScoreBoard(winner, loser, winner_score);
+//      PrintText("Game Over, " + winner + " wins!", green, size,
+//                vec2(860, 350));
+//    }
+//  }
 }
 
 string MyApp::GetWinner() {
