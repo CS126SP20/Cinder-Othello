@@ -64,6 +64,8 @@
  whether black or white player won to the sql database, as well
  as score. Added a panel on the side of the game to display score
  and messages to users. Added sound effects for placing a piece
- and for game over.
+ and for game over. Added reset button and method.
     - Add documentation in header files
+    - Update README
+    - Unit testing
     
