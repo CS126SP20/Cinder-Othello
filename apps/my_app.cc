@@ -55,6 +55,9 @@ void MyApp::setup() {
   background_ = gl::Texture2d::create(loadImage
       (loadAsset("othello_board.png")));
 
+  reset_ = gl::Texture2d::create(loadImage
+      (loadAsset("reset_button.png")));
+
   PlaySound("background");
 }
 
@@ -68,6 +71,12 @@ void MyApp::draw() {
   gl::clear();
   const Rectf board_bounds(0, 0, kBoardBounds, kBoardBounds);
   gl::draw(background_, board_bounds);// Draws the game board
+
+  if (IsGameOver()) {
+    const Rectf reset_bounds(800, 400, 900, 500);
+    gl::draw(reset_, reset_bounds);// Draws the reset button
+  }
+
   DrawBoard();
   DrawScoresAndText();
 
@@ -135,7 +144,6 @@ void MyApp::mouseDown(cinder::app::MouseEvent event) {
   x_tile_coordinate_ = x_tile_coordinate_ / kTileLength;
   y_tile_coordinate_ = y_tile_coordinate_ / kTileLength;
 
-//  is_white_turn_ = !is_white_turn_;
   if (IsMoveValid(x_tile_coordinate_, y_tile_coordinate_)) {
     PlaySound("click");
     valid_moves.clear();
@@ -166,19 +174,6 @@ void MyApp::FlipPieces(int& x_tile_coordinate_, int& y_tile_coordinate_) {
   if (is_white_turn_) {
     last_turn_color = "white";
   }
-//  prints the board
-//  for (int i = 0; i < 8; i++) {
-//    for (int j = 0; j < 8; j++) {
-//      if (game_board[j][i].empty()) {
-//        std::cout << "space ";
-//      } else {
-//        std::cout << game_board[j][i] + " ";
-//      }
-//    }
-//    std::cout << std::endl;
-//  }
-//  std::cout << std::endl;
-
 
   vector<std::pair<int, int>> to_flip;
 
@@ -284,7 +279,7 @@ vector<pair<int, int>> MyApp::GetValidMoves() {
 }
 
 bool MyApp::IsGameOver() {
-  return (white_score + black_score == (kBoardSize * kBoardSize));
+  return (white_score + black_score == 6);
 }
 
 void MyApp::DrawScoresAndText() {

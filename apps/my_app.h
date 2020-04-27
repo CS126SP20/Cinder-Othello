@@ -35,11 +35,12 @@ class MyApp : public cinder::app::App {
   bool InBounds(int x, int y);
   bool IsGameOver();
   void DrawScoresAndText();
-  void PlaySound(const string& voice);
+  static void PlaySound(const string& voice);
   string GetWinner();
   vector<pair<int, int>> GetValidMoves();
   othello::Scoreboard leaderboard_;
   cinder::gl::Texture2dRef background_;
+  cinder::gl::Texture2dRef reset_;
   vector<vector<string>> game_board;
   bool is_white_turn_ = false;
   int kBoardSize = 8;

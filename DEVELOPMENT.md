@@ -65,5 +65,5 @@
  as score. Added a panel on the side of the game to display score
  and messages to users. Added sound effects for placing a piece
  and for game over.
-    - 
+    - Add documentation in header files
     
