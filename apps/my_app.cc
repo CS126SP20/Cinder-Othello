@@ -126,10 +126,10 @@ void MyApp::DrawBoard() {
 
 void MyApp::mouseDown(cinder::app::MouseEvent event) {
 
-  if (IsGameOver() && event.getX() >= 800 && event.getX() <= 900
-    && event.getY() >= 400 && event.getY() <= 500) {
-    ResetGame();
-  }
+//  if (IsGameOver() && event.getX() >= 800 && event.getX() <= 900
+//    && event.getY() >= 400 && event.getY() <= 500) {
+//    ResetGame();
+//  }
 
   int x_tile_coordinate_ = event.getX();
   int y_tile_coordinate_ = event.getY();
@@ -162,7 +162,12 @@ void MyApp::mouseDown(cinder::app::MouseEvent event) {
 
   if (IsGameOver()) {
     PlaySound("game over");
+    if (event.getX() >= 800 && event.getX() <= 900
+        && event.getY() >= 400 && event.getY() <= 500) {
+      ResetGame();
+    }
   }
+
 }
 
 void MyApp::FlipPieces(int& x_tile_coordinate_, int& y_tile_coordinate_) {
@@ -283,14 +288,15 @@ void MyApp::DrawScoresAndText() {
   const Color green = Color(board_r, board_g, board_b);
   const string white_score_text = "White: " + std::to_string(white_score);
   const string black_score_text = "Black: " + std::to_string(black_score);
-  PrintText("Welcome to Othello!", green, size, vec2(860, 50));
+  PrintText("Welcome to Othello!",
+      green, size, vec2(860, 50));
   PrintText(white_score_text, green, size, vec2(860, 150));
   PrintText(black_score_text, green, size, vec2(860, 250));
 
   if (IsGameOver()) {
     string winner = GetWinner();
     if (winner == "tie") {
-      leaderboard_.AddWinnerToScoreBoard("white", "black",
+      leaderboard_.AddWinnerToScoreBoard("tie", "tie",
           white_score);
       PrintText("Game Over, it's a tie!", green, size,
                 vec2(860, 350));
@@ -341,7 +347,7 @@ void MyApp::ResetGame() {
   game_board.clear();
   SetGameBoard();
   is_white_turn_ = false;
-  valid_moves.clear();
+  valid_moves = GetValidMoves();
 }
 
 void MyApp::SetGameBoard() {
