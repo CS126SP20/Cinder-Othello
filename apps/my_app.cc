@@ -128,7 +128,6 @@ void MyApp::mouseDown(cinder::app::MouseEvent event) {
 
   if (IsGameOver() && event.getX() >= 800 && event.getX() <= 900
     && event.getY() >= 400 && event.getY() <= 500) {
-    cout << "reset" << endl;
     ResetGame();
   }
 
@@ -276,7 +275,7 @@ vector<pair<int, int>> MyApp::GetValidMoves() {
 }
 
 bool MyApp::IsGameOver() {
-  return (white_score + black_score == 6);
+  return (white_score + black_score == (kBoardSize * kBoardSize));
 }
 
 void MyApp::DrawScoresAndText() {
