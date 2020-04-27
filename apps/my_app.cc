@@ -90,7 +90,8 @@ void PrintText(const string& text, const C& color, const cinder::ivec2& size,
       .text(text);
 
   const auto box_size = box.getSize();
-  const cinder::vec2 locp = {loc.x - box_size.x / 2, loc.y - box_size.y / 2};
+  const cinder::vec2 locp = {loc.x - box_size.x / 2,
+                             loc.y - box_size.y / 2};
   const auto surface = box.render();
   const auto texture = cinder::gl::Texture::create(surface);
   cinder::gl::draw(texture, locp);
@@ -160,25 +161,8 @@ void MyApp::mouseDown(cinder::app::MouseEvent event) {
     valid_moves = GetValidMoves();
   }
 
-
-
-  const Color green = Color(board_r, board_g, board_b);
-  const cinder::ivec2 size = {500, 50};
   if (IsGameOver()) {
-    PlaySound("game over");
-    string winner = GetWinner();
-    if (winner == "tie") {
-      leaderboard_.AddWinnerToScoreBoard("tie", "tie",
-                                         white_score);
-      PrintText("Game Over, it's a tie!", green, size,
-                vec2(860, 350));
-    } else {
-      string loser = (winner == "white") ? "black" : "white";
-      int winner_score = (winner == "white") ? white_score : black_score;
-      leaderboard_.AddWinnerToScoreBoard(winner, loser, winner_score);
-      PrintText("Game Over, " + winner + " wins!", green, size,
-                vec2(860, 350));
-    }
+    EndGameAndAddToLeaderBoard();
   }
 
 }
@@ -293,19 +277,30 @@ vector<pair<int, int>> MyApp::GetValidMoves() {
 }
 
 bool MyApp::IsGameOver() {
-  return (white_score + black_score == (kBoardSize * kBoardSize));
+  return (white_score + black_score == 10);
 }
 
 void MyApp::DrawScoresAndText() {
-  const cinder::ivec2 size = {500, 50};
-  const Color green = Color(board_r, board_g, board_b);
+  const cinder::ivec2 kBoxSize = {500, 50};
+  const Color kGreen = Color(kBoardRed, kBoardGreen, kBoardBlue);
   const string white_score_text = "White: " + std::to_string(white_score);
   const string black_score_text = "Black: " + std::to_string(black_score);
   PrintText("Welcome to Othello!",
-      green, size, vec2(860, 50));
-  PrintText(white_score_text, green, size, vec2(860, 150));
-  PrintText(black_score_text, green, size, vec2(860, 250));
+      kGreen, kBoxSize, vec2(860, 50));
+  PrintText(white_score_text, kGreen, kBoxSize, vec2(860, 150));
+  PrintText(black_score_text, kGreen, kBoxSize, vec2(860, 250));
 
+  if (IsGameOver()) {
+    string winner = GetWinner();
+    if (winner == "tie") {
+      PrintText("Game Over, it's a tie!", kGreen, kBoxSize,
+                vec2(860, 350));
+    } else {
+      PrintText("Game Over, " + winner + " wins!", kGreen, kBoxSize,
+                vec2(860, 350));
+    }
+  }
+  //EndGame();
 //  if (IsGameOver()) {
 //    string winner = GetWinner();
 //    if (winner == "tie") {
@@ -374,6 +369,19 @@ void MyApp::SetGameBoard() {
   game_board[3][4] = "black";
   game_board[4][3] = "black";
   game_board[4][4] = "white";
+}
+
+void MyApp::EndGameAndAddToLeaderBoard() {
+  string winner = GetWinner();
+  PlaySound("game over");
+  if (winner == "tie") {
+    leaderboard_.AddWinnerToScoreBoard("tie", "tie",
+                                       white_score);
+  } else {
+    string loser = (winner == "white") ? "black" : "white";
+    int winner_score = (winner == "white") ? white_score : black_score;
+    leaderboard_.AddWinnerToScoreBoard(winner, loser, winner_score);
+  }
 }
 
 }  // namespace myapp
