@@ -2,53 +2,24 @@
 
 #include "my_app.h"
 
-#include <cinder/app/App.h>
-#include <sqlite_modern_cpp.h>
-#include <cinder/gl/draw.h>
-#include <cinder/gl/gl.h>
-#include "cinder/ip/Checkerboard.h"
-
 namespace myapp {
-
-using cinder::Color;
-using cinder::ColorA;
-using cinder::Rectf;
-using cinder::TextBox;
-using std::string;
-
-using cinder::app::KeyEvent;
-
-using std::chrono::duration_cast;
-using std::chrono::seconds;
-using std::chrono::system_clock;
-using std::string;
-using namespace ci;
-using namespace ci::app;
 
 audio::VoiceRef music_voice;
 audio::VoiceRef move_voice;
 audio::VoiceRef game_over_voice;
 const char kNormalFont[] = "Arial";
-
 const char kDbPath[] = "scoreboard.db";
-
-using cinder::app::KeyEvent;
 
 MyApp::MyApp(): leaderboard_{cinder::app::getAssetPath(kDbPath).string()} {}
 
 void MyApp::setup() {
   SetGameBoard();
-
   valid_moves = GetValidMoves();
-
   UpdateScores();
-
   background_ = gl::Texture2d::create(loadImage
       (loadAsset("othello_board.png")));
-
   reset_ = gl::Texture2d::create(loadImage
       (loadAsset("reset_button.png")));
-
   PlaySound("background");
 }
 
@@ -67,14 +38,10 @@ void MyApp::draw() {
     const Rectf reset_bounds(800, 400, 900, 500);
     gl::draw(reset_, reset_bounds);// Draws the reset button
   }
-
   DrawBoard();
   DrawScoresAndText();
-
   gl::color(Color(1,1,1));
 }
-
-void MyApp::keyDown(KeyEvent event) { }
 
 template <typename C>
 void PrintText(const string& text, const C& color, const cinder::ivec2& size,
@@ -164,7 +131,6 @@ void MyApp::mouseDown(cinder::app::MouseEvent event) {
   if (IsGameOver()) {
     EndGameAndAddToLeaderBoard();
   }
-
 }
 
 void MyApp::FlipPieces(int& x_tile_coordinate_, int& y_tile_coordinate_) {
@@ -172,16 +138,15 @@ void MyApp::FlipPieces(int& x_tile_coordinate_, int& y_tile_coordinate_) {
   if (is_white_turn_) {
     last_turn_color = "white";
   }
-
   vector<std::pair<int, int>> to_flip;
 
-  for (size_t i = 0; i < x_change.size(); i++) {
+  for (size_t i = 0; i < kXChange.size(); i++) {
     int x = x_tile_coordinate_;
     int y = y_tile_coordinate_;
 
     for (int j = 0; j < kBoardSize; j++) {
-      x += x_change[i];
-      y += y_change[i];
+      x += kXChange[i];
+      y += kYChange[i];
 
       if (!InBounds(x, y)) {
         break;
@@ -230,25 +195,24 @@ bool MyApp::IsMoveValid(int& x_tile_coordinate_, int& y_tile_coordinate_) {
   if (is_white_turn_) {
     last_turn_color = "white";
   }
-
   // If there's already a piece at that spot on the board, it is not
   // possible for it to be a valid move.
   if (!game_board[x_tile_coordinate_][y_tile_coordinate_].empty()) {
     return false;
   }
 
-  for (size_t i = 0; i < x_change.size(); i++) {
+  for (size_t i = 0; i < kXChange.size(); i++) {
     bool is_opposite_color_adjacent = false;
     int x = x_tile_coordinate_;
     int y = y_tile_coordinate_;
 
     for (int j = 0; j < kBoardSize; j++) {
-      x += x_change[i];
-      y += y_change[i];
-
+      x += kXChange[i];
+      y += kYChange[i];
       if (!InBounds(x, y)) {
         break;
       }
+
       if (game_board[x][y].empty()) { // Checks for empty string
         break;
       } else if (game_board[x][y] != last_turn_color) {
@@ -300,22 +264,6 @@ void MyApp::DrawScoresAndText() {
                 vec2(860, 350));
     }
   }
-  //EndGame();
-//  if (IsGameOver()) {
-//    string winner = GetWinner();
-//    if (winner == "tie") {
-//      leaderboard_.AddWinnerToScoreBoard("tie", "tie",
-//          white_score);
-//      PrintText("Game Over, it's a tie!", green, size,
-//                vec2(860, 350));
-//    } else {
-//      string loser = (winner == "white") ? "black" : "white";
-//      int winner_score = (winner == "white") ? white_score : black_score;
-//      leaderboard_.AddWinnerToScoreBoard(winner, loser, winner_score);
-//      PrintText("Game Over, " + winner + " wins!", green, size,
-//                vec2(860, 350));
-//    }
-//  }
 }
 
 string MyApp::GetWinner() {
