@@ -63,6 +63,7 @@
  - **04/28/2020** Added method to check for game over and add
  whether black or white player won to the sql database, as well
  as score. Added a panel on the side of the game to display score
- and messages to users.
+ and messages to users. Added sound effects for placing a piece
+ and for game over.
     - 
     

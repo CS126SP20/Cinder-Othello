@@ -55,11 +55,7 @@ void MyApp::setup() {
   background_ = gl::Texture2d::create(loadImage
       (loadAsset("othello_board.png")));
 
-  audio::SourceFileRef source_file =
-      audio::load( app::loadAsset( "background.mp3"));
-  music_voice = audio::Voice::create(source_file);
-  // Start playing background music audio from file:
-  music_voice->start();
+  PlaySound("background");
 }
 
 void MyApp::update() {
@@ -141,7 +137,7 @@ void MyApp::mouseDown(cinder::app::MouseEvent event) {
 
 //  is_white_turn_ = !is_white_turn_;
   if (IsMoveValid(x_tile_coordinate_, y_tile_coordinate_)) {
-    PlayClick();
+    PlaySound("click");
     valid_moves.clear();
     if (is_white_turn_) {
       game_board[x_tile_coordinate_][y_tile_coordinate_] = "white";
@@ -161,7 +157,7 @@ void MyApp::mouseDown(cinder::app::MouseEvent event) {
   }
 
   if (IsGameOver()) {
-    PlayGameOver();
+    PlaySound("game over");
   }
 }
 
@@ -326,20 +322,26 @@ string MyApp::GetWinner() {
   return "tie";
 }
 
-void MyApp::PlayClick() {
-  audio::SourceFileRef source_file =
-      audio::load( app::loadAsset( "click.wav"));
-  move_voice = audio::Voice::create(source_file);
-  // Start playing sound audio from file:
-  move_voice->start();
-}
-
-void MyApp::PlayGameOver() {
-  audio::SourceFileRef over_source_file =
-      audio::load( app::loadAsset( "game_over.wav"));
-  game_over_voice = audio::Voice::create(over_source_file);
-  // Start playing sound audio from file:
-  game_over_voice->start();
+void MyApp::PlaySound(const string& voice) {
+  if (voice == "click") {
+    audio::SourceFileRef source_file =
+        audio::load( app::loadAsset( "click.wav"));
+    move_voice = audio::Voice::create(source_file);
+    // Start playing sound audio from file:
+    move_voice->start();
+  } else if (voice == "game over") {
+    audio::SourceFileRef over_source_file =
+        audio::load( app::loadAsset( "game_over.wav"));
+    game_over_voice = audio::Voice::create(over_source_file);
+    // Start playing sound audio from file:
+    game_over_voice->start();
+  } else {
+    audio::SourceFileRef source_file =
+        audio::load( app::loadAsset( "background.mp3"));
+    music_voice = audio::Voice::create(source_file);
+    // Start playing background music audio from file:
+    music_voice->start();
+  }
 }
 
 }  // namespace myapp

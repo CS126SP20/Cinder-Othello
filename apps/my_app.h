@@ -35,8 +35,7 @@ class MyApp : public cinder::app::App {
   bool InBounds(int x, int y);
   bool IsGameOver();
   void DrawScoresAndText();
-  void PlayClick();
-  void PlayGameOver();
+  void PlaySound(const string& voice);
   string GetWinner();
   vector<pair<int, int>> GetValidMoves();
   othello::Scoreboard leaderboard_;
