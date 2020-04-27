@@ -35,7 +35,7 @@ void MyApp::draw() {
   gl::draw(background_, board_bounds);// Draws the game board
 
   if (IsGameOver()) {
-    const Rectf reset_bounds(800, 400, 900, 500);
+    const Rectf reset_bounds(810, 400, 910, 500);
     gl::draw(reset_, reset_bounds);// Draws the reset button
   }
   DrawBoard();
@@ -94,7 +94,7 @@ void MyApp::DrawBoard() {
 
 void MyApp::mouseDown(cinder::app::MouseEvent event) {
 
-  if (IsGameOver() && event.getX() >= 800 && event.getX() <= 900
+  if (IsGameOver() && event.getX() >= 810 && event.getX() <= 910
     && event.getY() >= 400 && event.getY() <= 500) {
     ResetGame();
   }
@@ -241,7 +241,7 @@ vector<pair<int, int>> MyApp::GetValidMoves() {
 }
 
 bool MyApp::IsGameOver() {
-  return (white_score + black_score == 10);
+  return (white_score + black_score == (kBoardSize * kBoardSize));
 }
 
 void MyApp::DrawScoresAndText() {

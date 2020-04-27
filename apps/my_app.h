@@ -61,19 +61,82 @@ class MyApp : public cinder::app::App {
   void mouseDown(cinder::app::MouseEvent) override;
 
  private:
+  /**
+   *
+   * @param x_tile_coordinate_
+   * @param y_tile_coordinate_
+   */
   void FlipPieces(int& x_tile_coordinate_, int& y_tile_coordinate_);
+
+  /**
+   *
+   * @param x_tile_coordinate_
+   * @param y_tile_coordinate_
+   * @return
+   */
   bool IsMoveValid(int& x_tile_coordinate_, int& y_tile_coordinate_);
+
+  /**
+   *
+   */
   void DrawBoard();
+
+  /**
+   *
+   */
   void UpdateScores();
+
+  /**
+   *
+   * @param x
+   * @param y
+   * @return
+   */
   bool InBounds(int x, int y);
+
+  /**
+   *
+   * @return
+   */
   bool IsGameOver();
+
+  /**
+   *
+   */
   void DrawScoresAndText();
+
+  /**
+   *
+   */
   static void PlaySound(const string& voice);
+
+  /**
+   *
+   */
   void ResetGame();
+
+  /**
+   *
+   * @return
+   */
   string GetWinner();
+
+  /**
+   *
+   * @return
+   */
   vector<pair<int, int>> GetValidMoves();
+
+  /**
+   *
+   */
   void SetGameBoard();
+
+  /**
+   *
+   */
   void EndGameAndAddToLeaderBoard();
+
   othello::Scoreboard leaderboard_;
   cinder::gl::Texture2dRef background_;
   cinder::gl::Texture2dRef reset_;
