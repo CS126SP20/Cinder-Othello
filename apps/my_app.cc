@@ -26,6 +26,8 @@ using namespace ci;
 using namespace ci::app;
 
 audio::VoiceRef music_voice;
+audio::VoiceRef move_voice;
+audio::VoiceRef game_over_voice;
 const char kNormalFont[] = "Arial";
 
 const char kDbPath[] = "scoreboard.db";
@@ -53,9 +55,9 @@ void MyApp::setup() {
   background_ = gl::Texture2d::create(loadImage
       (loadAsset("othello_board.png")));
 
-  audio::SourceFileRef sourceFile =
+  audio::SourceFileRef source_file =
       audio::load( app::loadAsset( "background.mp3"));
-  music_voice = audio::Voice::create(sourceFile);
+  music_voice = audio::Voice::create(source_file);
   // Start playing background music audio from file:
   music_voice->start();
 }
@@ -139,6 +141,7 @@ void MyApp::mouseDown(cinder::app::MouseEvent event) {
 
 //  is_white_turn_ = !is_white_turn_;
   if (IsMoveValid(x_tile_coordinate_, y_tile_coordinate_)) {
+    PlayClick();
     valid_moves.clear();
     if (is_white_turn_) {
       game_board[x_tile_coordinate_][y_tile_coordinate_] = "white";
@@ -157,6 +160,9 @@ void MyApp::mouseDown(cinder::app::MouseEvent event) {
     valid_moves = GetValidMoves();
   }
 
+  if (IsGameOver()) {
+    PlayGameOver();
+  }
 }
 
 void MyApp::FlipPieces(int& x_tile_coordinate_, int& y_tile_coordinate_) {
@@ -282,7 +288,7 @@ vector<pair<int, int>> MyApp::GetValidMoves() {
 }
 
 bool MyApp::IsGameOver() {
-  return (white_score + black_score == 6);
+  return (white_score + black_score == (kBoardSize * kBoardSize));
 }
 
 void MyApp::DrawScoresAndText() {
@@ -290,8 +296,9 @@ void MyApp::DrawScoresAndText() {
   const Color green = Color(board_r, board_g, board_b);
   const string white_score_text = "White: " + std::to_string(white_score);
   const string black_score_text = "Black: " + std::to_string(black_score);
-  PrintText(white_score_text, green, size, vec2(860, 50));
-  PrintText(black_score_text, green, size, vec2(860, 150));
+  PrintText("Welcome to Othello!", green, size, vec2(860, 50));
+  PrintText(white_score_text, green, size, vec2(860, 150));
+  PrintText(black_score_text, green, size, vec2(860, 250));
 
   if (IsGameOver()) {
     string winner = GetWinner();
@@ -317,6 +324,22 @@ string MyApp::GetWinner() {
     return "black";
   }
   return "tie";
+}
+
+void MyApp::PlayClick() {
+  audio::SourceFileRef source_file =
+      audio::load( app::loadAsset( "click.wav"));
+  move_voice = audio::Voice::create(source_file);
+  // Start playing sound audio from file:
+  move_voice->start();
+}
+
+void MyApp::PlayGameOver() {
+  audio::SourceFileRef over_source_file =
+      audio::load( app::loadAsset( "game_over.wav"));
+  game_over_voice = audio::Voice::create(over_source_file);
+  // Start playing sound audio from file:
+  game_over_voice->start();
 }
 
 }  // namespace myapp

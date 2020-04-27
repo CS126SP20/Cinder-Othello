@@ -57,4 +57,12 @@
     information
     - Add sound when player moves
     - Need to start updating the README
+    - Need to start making code testable
+    - Add reset functionality
+    
+ - **04/28/2020** Added method to check for game over and add
+ whether black or white player won to the sql database, as well
+ as score. Added a panel on the side of the game to display score
+ and messages to users.
+    - 
     
