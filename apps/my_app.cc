@@ -37,16 +37,7 @@ using cinder::app::KeyEvent;
 MyApp::MyApp(): leaderboard_{cinder::app::getAssetPath(kDbPath).string()} {}
 
 void MyApp::setup() {
-  // Fills game board with empty strings initially
-  vector<string> v(8, "");
-  for (size_t i = 0; i < 8; i++) {
-    game_board.push_back(v);
-  }
-  // Sets the starting 4 pieces in the middle of the board to white and black
-  game_board[3][3] = "white";
-  game_board[3][4] = "black";
-  game_board[4][3] = "black";
-  game_board[4][4] = "white";
+  SetGameBoard();
 
   valid_moves = GetValidMoves();
 
@@ -134,6 +125,12 @@ void MyApp::DrawBoard() {
 }
 
 void MyApp::mouseDown(cinder::app::MouseEvent event) {
+
+  if (IsGameOver() && event.getX() >= 800 && event.getX() <= 900
+    && event.getY() >= 400 && event.getY() <= 500) {
+    cout << "reset" << endl;
+    ResetGame();
+  }
 
   int x_tile_coordinate_ = event.getX();
   int y_tile_coordinate_ = event.getY();
@@ -337,6 +334,28 @@ void MyApp::PlaySound(const string& voice) {
     // Start playing background music audio from file:
     music_voice->start();
   }
+}
+
+void MyApp::ResetGame() {
+  white_score = 2;
+  black_score = 2;
+  game_board.clear();
+  SetGameBoard();
+  is_white_turn_ = false;
+  valid_moves.clear();
+}
+
+void MyApp::SetGameBoard() {
+  // Fills game board with empty strings initially
+  vector<string> v(8, "");
+  for (size_t i = 0; i < 8; i++) {
+    game_board.push_back(v);
+  }
+  // Sets the starting 4 pieces in the middle of the board to white and black
+  game_board[3][3] = "white";
+  game_board[3][4] = "black";
+  game_board[4][3] = "black";
+  game_board[4][4] = "white";
 }
 
 }  // namespace myapp

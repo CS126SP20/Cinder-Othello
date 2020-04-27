@@ -36,8 +36,10 @@ class MyApp : public cinder::app::App {
   bool IsGameOver();
   void DrawScoresAndText();
   static void PlaySound(const string& voice);
+  void ResetGame();
   string GetWinner();
   vector<pair<int, int>> GetValidMoves();
+  void SetGameBoard();
   othello::Scoreboard leaderboard_;
   cinder::gl::Texture2dRef background_;
   cinder::gl::Texture2dRef reset_;
