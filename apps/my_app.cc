@@ -126,10 +126,10 @@ void MyApp::DrawBoard() {
 
 void MyApp::mouseDown(cinder::app::MouseEvent event) {
 
-//  if (IsGameOver() && event.getX() >= 800 && event.getX() <= 900
-//    && event.getY() >= 400 && event.getY() <= 500) {
-//    ResetGame();
-//  }
+  if (IsGameOver() && event.getX() >= 800 && event.getX() <= 900
+    && event.getY() >= 400 && event.getY() <= 500) {
+    ResetGame();
+  }
 
   int x_tile_coordinate_ = event.getX();
   int y_tile_coordinate_ = event.getY();
@@ -162,10 +162,6 @@ void MyApp::mouseDown(cinder::app::MouseEvent event) {
 
   if (IsGameOver()) {
     PlaySound("game over");
-    if (event.getX() >= 800 && event.getX() <= 900
-        && event.getY() >= 400 && event.getY() <= 500) {
-      ResetGame();
-    }
   }
 
 }
