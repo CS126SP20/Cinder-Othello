@@ -68,4 +68,13 @@
     - Add documentation in header files
     - Update README
     - Unit testing
+ 
+ - **04/30/2020** Added documentation for methods in myapp
+    - Look into adding getter and setter methods to help you with unit
+    testing the more logical side of your code
+    - Add rules in the side panel for users to see
+    - Update README
+ 
+ - **05/02/2020**
+ 
     

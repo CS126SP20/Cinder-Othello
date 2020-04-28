@@ -34,6 +34,7 @@ using namespace ci::app;
 namespace myapp {
 
 class MyApp : public cinder::app::App {
+
  public:
   /**
    *
@@ -61,12 +62,31 @@ class MyApp : public cinder::app::App {
   void mouseDown(cinder::app::MouseEvent) override;
 
  private:
+
+  /**
+   *
+   */
+  void DrawBoard();
+
   /**
    *
    * @param x_tile_coordinate_
    * @param y_tile_coordinate_
    */
   void FlipPieces(int& x_tile_coordinate_, int& y_tile_coordinate_);
+
+  /**
+   *
+   * @param x
+   * @param y
+   * @return
+   */
+  bool InBounds(int x, int y);
+
+  /**
+   *
+   */
+  void UpdateScores();
 
   /**
    *
@@ -78,21 +98,9 @@ class MyApp : public cinder::app::App {
 
   /**
    *
-   */
-  void DrawBoard();
-
-  /**
-   *
-   */
-  void UpdateScores();
-
-  /**
-   *
-   * @param x
-   * @param y
    * @return
    */
-  bool InBounds(int x, int y);
+  vector<pair<int, int>> GetValidMoves();
 
   /**
    *
@@ -107,6 +115,12 @@ class MyApp : public cinder::app::App {
 
   /**
    *
+   * @return
+   */
+  string GetWinner();
+
+  /**
+   *
    */
   static void PlaySound(const string& voice);
 
@@ -117,42 +131,33 @@ class MyApp : public cinder::app::App {
 
   /**
    *
-   * @return
-   */
-  string GetWinner();
-
-  /**
-   *
-   * @return
-   */
-  vector<pair<int, int>> GetValidMoves();
-
-  /**
-   *
    */
   void SetGameBoard();
 
   /**
    *
    */
-  void EndGameAndAddToLeaderBoard();
+  void EndGameAndAddToLeaderboard();
 
   othello::Scoreboard leaderboard_;
   cinder::gl::Texture2dRef background_;
   cinder::gl::Texture2dRef reset_;
-  vector<vector<string>> game_board;
+  vector<vector<string>> game_board_;
+  vector<pair<int, int>> valid_moves_;
   bool is_white_turn_ = false;
-  int black_score = 2;
-  int white_score = 2;
-  vector<pair<int, int>> valid_moves;
+  int black_score_ = 2;
+  int white_score_ = 2;
   const int kBoardSize = 8;
-  const int kBoardBounds = 720;
+  const int kBoardBounds = getWindowBounds().getHeight();
   const int kTileLength = getWindowBounds().getHeight()/kBoardSize;
   const int kTileCenter = kTileLength/2;
   const int kCirclePieceRadius = 35;
+  // The rgb values to get a green color matching the color of the game board
   const float kBoardRed = 46.0 / 255.0;
   const float kBoardGreen = 174.0 /255.0;
   const float kBoardBlue = 82.0 / 255.0;
+  // These vectors represent the 8 directions on the Othello board in
+  // which a piece can move; used to show valid moves to the players
   const vector<int> kXChange{-1, 0, 1, -1, 1, -1, 0, 1};
   const vector<int> kYChange{-1, -1, -1, 0, 0, 1, 1, 1};
 };

@@ -4,7 +4,6 @@
 
 #include <cinder/Rand.h>
 #include <mylibrary/scoreboard.h>
-
 #include <catch2/catch.hpp>
 
 TEST_CASE("Random sanity test", "[random]") {
