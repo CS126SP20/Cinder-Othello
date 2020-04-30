@@ -74,6 +74,10 @@
     testing the more logical side of your code
     - Add rules in the side panel for users to see
     - Update README
+    - Methods I can actually unit test: FlipPieces(return the board),
+    UpdateScores(return one of the scores or a pair of score), InBounds,
+    IsMoveValid (pass in the board and white turn as parameters), 
+    GetValidMoves(pass in the board), 
  
  - **05/02/2020**
  

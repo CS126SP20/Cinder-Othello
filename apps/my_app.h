@@ -13,6 +13,7 @@
 #include <sqlite_modern_cpp.h>
 #include <cinder/gl/draw.h>
 #include <cinder/gl/gl.h>
+#include <mylibrary/logic.h>
 
 using std::vector;
 using std::string;
@@ -24,6 +25,7 @@ using cinder::ColorA;
 using cinder::Rectf;
 using cinder::TextBox;
 using std::string;
+using std::to_string;
 using cinder::app::KeyEvent;
 using std::chrono::duration_cast;
 using std::chrono::seconds;
@@ -132,12 +134,18 @@ class MyApp : public cinder::app::App {
   /**
    *
    */
-  void SetGameBoard();
+  void SetInitialGameBoard();
 
   /**
    *
    */
   void EndGameAndAddToLeaderboard();
+
+  void SetGameBoard(const vector<vector<string>>& board);
+
+  vector<vector<string>> GetGameBoard();
+
+
 
   othello::Scoreboard leaderboard_;
   cinder::gl::Texture2dRef background_;

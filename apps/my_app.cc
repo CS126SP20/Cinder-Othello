@@ -13,9 +13,14 @@ const char kDbPath[] = "scoreboard.db";
 MyApp::MyApp(): leaderboard_{cinder::app::getAssetPath(kDbPath).string()} {}
 
 void MyApp::setup() {
-  SetGameBoard();
-  valid_moves_ = GetValidMoves();
-  UpdateScores();
+  SetInitialGameBoard();
+  valid_moves_ = logic::GetValidMoves(game_board_, is_white_turn_);
+//  UpdateScores();
+  pair<int, int> scores = logic::UpdateScores(game_board_,
+                                              white_score_, black_score_);
+  white_score_ = scores.first;
+  black_score_ = scores.second;
+
   background_ = gl::Texture2d::create(loadImage
       (loadAsset("othello_board.png")));
   reset_ = gl::Texture2d::create(loadImage
@@ -59,7 +64,8 @@ void MyApp::mouseDown(cinder::app::MouseEvent event) {
   x_tile_coordinate_ = x_tile_coordinate_ / kTileLength;
   y_tile_coordinate_ = y_tile_coordinate_ / kTileLength;
 
-  if (IsMoveValid(x_tile_coordinate_, y_tile_coordinate_)) {
+  if (logic::IsMoveValid(x_tile_coordinate_, y_tile_coordinate_,
+      is_white_turn_, game_board_)) {
     PlaySound("click");
     valid_moves_.clear();
     if (is_white_turn_) {
@@ -67,16 +73,23 @@ void MyApp::mouseDown(cinder::app::MouseEvent event) {
     } else {
       game_board_[x_tile_coordinate_][y_tile_coordinate_] = "black";
     }
-    FlipPieces(x_tile_coordinate_, y_tile_coordinate_);
+    //FlipPieces(x_tile_coordinate_, y_tile_coordinate_);
+    game_board_ = logic::FlipPieces(x_tile_coordinate_, y_tile_coordinate_, is_white_turn_, game_board_);
+    //call update scores here
+    pair<int, int> scores = logic::UpdateScores(game_board_,
+        white_score_, black_score_);
+    white_score_ = scores.first;
+    black_score_ = scores.second;
+
   } else {
     is_white_turn_ = !is_white_turn_;
   }
   is_white_turn_ = !is_white_turn_;
-  valid_moves_ = GetValidMoves();
+  valid_moves_ = logic::GetValidMoves(game_board_, is_white_turn_);
 
   if (valid_moves_.empty()) {
     is_white_turn_ = !is_white_turn_;
-    valid_moves_ = GetValidMoves();
+    valid_moves_ = logic::GetValidMoves(game_board_, is_white_turn_);
   }
 
   if (IsGameOver()) {
@@ -136,7 +149,7 @@ void MyApp::FlipPieces(int& x_tile_coordinate_, int& y_tile_coordinate_) {
   if (is_white_turn_) {
     last_turn_color = "white";
   }
-  vector<std::pair<int, int>> to_flip;
+  vector<pair<int, int>> to_flip;
 
   for (size_t i = 0; i < kXChange.size(); i++) {
     int x = x_tile_coordinate_;
@@ -228,8 +241,8 @@ vector<pair<int, int>> MyApp::GetValidMoves() {
   vector<pair<int, int>> moves;
   for (size_t i = 0; i < kBoardSize; i++) {
     for (size_t j = 0; j < kBoardSize; j++) {
-      if (game_board_[i][j].empty() && IsMoveValid(reinterpret_cast<int&>(i),
-          reinterpret_cast<int&>(j))) {
+      if (game_board_[i][j].empty() && logic::IsMoveValid(reinterpret_cast<int&>(i),
+          reinterpret_cast<int&>(j), is_white_turn_, game_board_)) {
         moves.emplace_back(i, j);
       }
     }
@@ -244,8 +257,8 @@ bool MyApp::IsGameOver() {
 void MyApp::DrawScoresAndText() {
   const cinder::ivec2 kBoxSize = {500, 50};
   const Color kGreen = Color(kBoardRed, kBoardGreen, kBoardBlue);
-  const string white_score_text = "White: " + std::to_string(white_score_);
-  const string black_score_text = "Black: " + std::to_string(black_score_);
+  const string white_score_text = "White: " + to_string(white_score_);
+  const string black_score_text = "Black: " + to_string(black_score_);
   PrintText("Welcome to Othello!",
       kGreen, kBoxSize, vec2(860, 50));
   PrintText(white_score_text, kGreen, kBoxSize, vec2(860, 150));
@@ -298,12 +311,12 @@ void MyApp::ResetGame() {
   white_score_ = 2;
   black_score_ = 2;
   game_board_.clear();
-  SetGameBoard();
+  SetInitialGameBoard();
   is_white_turn_ = false;
-  valid_moves_ = GetValidMoves();
+  valid_moves_ = logic::GetValidMoves(game_board_, is_white_turn_);
 }
 
-void MyApp::SetGameBoard() {
+void MyApp::SetInitialGameBoard() {
   // Fills game board with empty strings initially
   vector<string> v(8, "");
   for (size_t i = 0; i < 8; i++) {
@@ -327,6 +340,13 @@ void MyApp::EndGameAndAddToLeaderboard() {
     int winner_score = (winner == "white") ? white_score_ : black_score_;
     leaderboard_.AddWinnerToScoreBoard(winner, loser, winner_score);
   }
+}
+
+void MyApp::SetGameBoard(const vector<vector<string>>& board) {
+  game_board_ = board;
+}
+vector<vector<string>> MyApp::GetGameBoard() {
+  return game_board_;
 }
 
 }  // namespace myapp
