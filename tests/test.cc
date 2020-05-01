@@ -10,7 +10,7 @@
 using std::vector;
 using std::pair;
 
-TEST_CASE("Random sanity test", "[random]") {
+TEST_CASE("Valid moves can be found", "[valid-moves]") {
   const int kBoardSize = 8;
   vector<vector<string>> starting_board;
   vector<string> v(kBoardSize, "");
@@ -31,7 +31,6 @@ TEST_CASE("Random sanity test", "[random]") {
   REQUIRE(logic::GetValidMoves(starting_board, false) == valid_moves);
 
   SECTION("full board") {
-
     for (size_t i = 0; i < kBoardSize; i++) {
       for (size_t j = 0; j < kBoardSize; j++) {
         if (i % 2 == 0) {
@@ -45,3 +44,4 @@ TEST_CASE("Random sanity test", "[random]") {
     REQUIRE(logic::GetValidMoves(starting_board, false) == valid_moves);
   }
 }
+

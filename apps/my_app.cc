@@ -39,7 +39,7 @@ void MyApp::draw() {
   const Rectf board_bounds(0, 0, kBoardBounds, kBoardBounds);
   gl::draw(background_, board_bounds);// Draws the game board
   if (IsGameOver()) {
-    const Rectf reset_bounds(810, 400, 910, 500);
+    const Rectf reset_bounds(810, 450, 910, 550);
     gl::draw(reset_, reset_bounds);// Draws the reset button
   }
   DrawBoard();
@@ -50,7 +50,7 @@ void MyApp::draw() {
 void MyApp::mouseDown(cinder::app::MouseEvent event) {
 
   if (IsGameOver() && event.getX() >= 810 && event.getX() <= 910
-      && event.getY() >= 400 && event.getY() <= 500) {
+      && event.getY() >= 450 && event.getY() <= 550) {
     ResetGame();
   }
 
@@ -262,17 +262,20 @@ void MyApp::DrawScoresAndText() {
   const string black_score_text = "Black: " + to_string(black_score_);
   PrintText("Welcome to Othello!",
       kGreen, kBoxSize, vec2(860, 50));
-  PrintText(white_score_text, kGreen, kBoxSize, vec2(860, 150));
-  PrintText(black_score_text, kGreen, kBoxSize, vec2(860, 250));
+  PrintText(white_score_text, kGreen, kBoxSize, vec2(860, 200));
+  PrintText(black_score_text, kGreen, kBoxSize, vec2(860, 300));
+  string turn = is_white_turn_ ? "White" : "Black";
+  PrintText(turn + " turn", kGreen, kBoxSize,
+            vec2(860, 100));
 
   if (IsGameOver()) {
     string winner = GetWinner();
     if (winner == "tie") {
       PrintText("Game Over, it's a tie!", kGreen, kBoxSize,
-                vec2(860, 350));
+                vec2(860, 400));
     } else {
       PrintText("Game Over, " + winner + " wins!", kGreen, kBoxSize,
-                vec2(860, 350));
+                vec2(860, 400));
     }
   }
 }
