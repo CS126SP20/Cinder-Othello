@@ -164,6 +164,8 @@ class MyApp : public cinder::app::App {
   const float kBoardRed = 46.0 / 255.0;
   const float kBoardGreen = 174.0 /255.0;
   const float kBoardBlue = 82.0 / 255.0;
+  const int kFirstStartCoord = 3;
+  const int kSecondStartCoord = 4;
   // These vectors represent the 8 directions on the Othello board in
   // which a piece can move; used to show valid moves to the players
   const vector<int> kXChange{-1, 0, 1, -1, 1, -1, 0, 1};

@@ -20,12 +20,15 @@ using std::pair;
 namespace logic {
 
 /**
-   *
-   * @param x_tile_coordinate_
-   * @param y_tile_coordinate_
-   */
+ *
+ * @param x_tile_coordinate_
+ * @param y_tile_coordinate_
+ * @param is_white_turn_
+ * @param game_board_
+ * @return
+ */
 vector<vector<string>> FlipPieces(int& x_tile_coordinate_,
-                                  int& y_tile_coordinate_, bool& is_white_turn_,
+                                  int& y_tile_coordinate_, bool is_white_turn_,
                                   vector<vector<string>>& game_board_);
 
 /**

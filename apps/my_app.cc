@@ -265,7 +265,7 @@ void MyApp::DrawScoresAndText() {
   PrintText(white_score_text, kGreen, kBoxSize, vec2(860, 200));
   PrintText(black_score_text, kGreen, kBoxSize, vec2(860, 300));
   string turn = is_white_turn_ ? "White" : "Black";
-  PrintText(turn + " turn", kGreen, kBoxSize,
+  PrintText(turn + " Turn", kGreen, kBoxSize,
             vec2(860, 100));
 
   if (IsGameOver()) {
@@ -322,15 +322,15 @@ void MyApp::ResetGame() {
 
 void MyApp::SetInitialGameBoard() {
   // Fills game board with empty strings initially
-  vector<string> v(8, "");
-  for (size_t i = 0; i < 8; i++) {
+  vector<string> v(kBoardSize, "");
+  for (size_t i = 0; i < kBoardSize; i++) {
     game_board_.push_back(v);
   }
   // Sets the starting 4 pieces in the middle of the board to white and black
-  game_board_[3][3] = "white";
-  game_board_[3][4] = "black";
-  game_board_[4][3] = "black";
-  game_board_[4][4] = "white";
+  game_board_[kFirstStartCoord][kFirstStartCoord] = "white";
+  game_board_[kFirstStartCoord][kSecondStartCoord] = "black";
+  game_board_[kSecondStartCoord][kFirstStartCoord] = "black";
+  game_board_[kSecondStartCoord][kSecondStartCoord] = "white";
 }
 
 void MyApp::EndGameAndAddToLeaderboard() {

@@ -7,7 +7,7 @@
 namespace logic {
 
 vector<vector<string>> FlipPieces(int& x_tile_coordinate_,
-    int& y_tile_coordinate_, bool& is_white_turn_,
+    int& y_tile_coordinate_, bool is_white_turn_,
     vector<vector<string>>& game_board_) {
   string last_turn_color = "black";
   if (is_white_turn_) {
@@ -19,7 +19,7 @@ vector<vector<string>> FlipPieces(int& x_tile_coordinate_,
     int x = x_tile_coordinate_;
     int y = y_tile_coordinate_;
 
-    for (int j = 0; j < kBoardSize; j++) {
+    for (size_t j = 0; j < kBoardSize; j++) {
       x += kXChange[i];
       y += kYChange[i];
 
@@ -87,7 +87,7 @@ bool IsMoveValid(int& x_tile_coordinate_, int& y_tile_coordinate_,
     int x = x_tile_coordinate_;
     int y = y_tile_coordinate_;
 
-    for (int j = 0; j < kBoardSize; j++) {
+    for (size_t j = 0; j < kBoardSize; j++) {
       x += kXChange[i];
       y += kYChange[i];
       if (!InBounds(x, y)) {
