@@ -15,11 +15,11 @@ MyApp::MyApp(): leaderboard_{cinder::app::getAssetPath(kDbPath).string()} {}
 void MyApp::setup() {
   SetInitialGameBoard();
   valid_moves_ = logic::GetValidMoves(game_board_, is_white_turn_);
-//  UpdateScores();
-  pair<int, int> scores = logic::UpdateScores(game_board_,
-                                              white_score_, black_score_);
-  white_score_ = scores.first;
-  black_score_ = scores.second;
+  UpdateScores();
+//  pair<int, int> scores = logic::UpdateScores(game_board_,
+//                                              white_score_, black_score_);
+//  white_score_ = scores.first;
+//  black_score_ = scores.second;
 
   background_ = gl::Texture2d::create(loadImage
       (loadAsset("othello_board.png")));
@@ -38,7 +38,6 @@ void MyApp::draw() {
   gl::clear();
   const Rectf board_bounds(0, 0, kBoardBounds, kBoardBounds);
   gl::draw(background_, board_bounds);// Draws the game board
-
   if (IsGameOver()) {
     const Rectf reset_bounds(810, 400, 910, 500);
     gl::draw(reset_, reset_bounds);// Draws the reset button
@@ -74,12 +73,14 @@ void MyApp::mouseDown(cinder::app::MouseEvent event) {
       game_board_[x_tile_coordinate_][y_tile_coordinate_] = "black";
     }
     //FlipPieces(x_tile_coordinate_, y_tile_coordinate_);
-    game_board_ = logic::FlipPieces(x_tile_coordinate_, y_tile_coordinate_, is_white_turn_, game_board_);
+    game_board_ = logic::FlipPieces(x_tile_coordinate_,
+        y_tile_coordinate_, is_white_turn_, game_board_);
     //call update scores here
-    pair<int, int> scores = logic::UpdateScores(game_board_,
-        white_score_, black_score_);
-    white_score_ = scores.first;
-    black_score_ = scores.second;
+    UpdateScores();
+//    pair<int, int> scores = logic::UpdateScores(game_board_,
+//        white_score_, black_score_);
+//    white_score_ = scores.first;
+//    black_score_ = scores.second;
 
   } else {
     is_white_turn_ = !is_white_turn_;
@@ -144,44 +145,44 @@ void MyApp::DrawBoard() {
   }
 }
 
-void MyApp::FlipPieces(int& x_tile_coordinate_, int& y_tile_coordinate_) {
-  string last_turn_color = "black";
-  if (is_white_turn_) {
-    last_turn_color = "white";
-  }
-  vector<pair<int, int>> to_flip;
+//void MyApp::FlipPieces(int& x_tile_coordinate_, int& y_tile_coordinate_) {
+//  string last_turn_color = "black";
+//  if (is_white_turn_) {
+//    last_turn_color = "white";
+//  }
+//  vector<pair<int, int>> to_flip;
+//
+//  for (size_t i = 0; i < kXChange.size(); i++) {
+//    int x = x_tile_coordinate_;
+//    int y = y_tile_coordinate_;
+//
+//    for (int j = 0; j < kBoardSize; j++) {
+//      x += kXChange[i];
+//      y += kYChange[i];
+//
+//      if (!InBounds(x, y)) {
+//        break;
+//      }
+//      if (game_board_[x][y].empty()) { // Checks for empty string
+//        break;
+//      } else if (game_board_[x][y] != last_turn_color) {
+//        to_flip.emplace_back(x, y); // Adds the pair of coordinates to to_flip
+//      } else { // == lastTurnColor
+//        for (const auto& pair : to_flip) {
+//          game_board_[pair.first][pair.second] = last_turn_color;
+//        }
+//        break;
+//      }
+//    }
+//    to_flip.clear();
+//  }
+//
+//  UpdateScores();
+//}
 
-  for (size_t i = 0; i < kXChange.size(); i++) {
-    int x = x_tile_coordinate_;
-    int y = y_tile_coordinate_;
-
-    for (int j = 0; j < kBoardSize; j++) {
-      x += kXChange[i];
-      y += kYChange[i];
-
-      if (!InBounds(x, y)) {
-        break;
-      }
-      if (game_board_[x][y].empty()) { // Checks for empty string
-        break;
-      } else if (game_board_[x][y] != last_turn_color) {
-        to_flip.emplace_back(x, y); // Adds the pair of coordinates to to_flip
-      } else { // == lastTurnColor
-        for (const auto& pair : to_flip) {
-          game_board_[pair.first][pair.second] = last_turn_color;
-        }
-        break;
-      }
-    }
-    to_flip.clear();
-  }
-
-  UpdateScores();
-}
-
-bool MyApp::InBounds(int x, int y) {
-  return (x >= 0) && (x < kBoardSize) && (y >= 0) && (y < kBoardSize);
-}
+//bool MyApp::InBounds(int x, int y) {
+//  return (x >= 0) && (x < kBoardSize) && (y >= 0) && (y < kBoardSize);
+//}
 
 void MyApp::UpdateScores() {
   white_score_ = 0;
@@ -197,58 +198,58 @@ void MyApp::UpdateScores() {
   }
 }
 
-bool MyApp::IsMoveValid(int& x_tile_coordinate_, int& y_tile_coordinate_) {
-  if (!InBounds(x_tile_coordinate_, y_tile_coordinate_)) {
-    return false;
-  }
-  string last_turn_color = "black";
-  if (is_white_turn_) {
-    last_turn_color = "white";
-  }
-  // If there's already a piece at that spot on the board, it is not
-  // possible for it to be a valid move.
-  if (!game_board_[x_tile_coordinate_][y_tile_coordinate_].empty()) {
-    return false;
-  }
+//bool MyApp::IsMoveValid(int& x_tile_coordinate_, int& y_tile_coordinate_) {
+//  if (!InBounds(x_tile_coordinate_, y_tile_coordinate_)) {
+//    return false;
+//  }
+//  string last_turn_color = "black";
+//  if (is_white_turn_) {
+//    last_turn_color = "white";
+//  }
+//  // If there's already a piece at that spot on the board, it is not
+//  // possible for it to be a valid move.
+//  if (!game_board_[x_tile_coordinate_][y_tile_coordinate_].empty()) {
+//    return false;
+//  }
+//
+//  for (size_t i = 0; i < kXChange.size(); i++) {
+//    bool is_opposite_color_adjacent = false;
+//    int x = x_tile_coordinate_;
+//    int y = y_tile_coordinate_;
+//
+//    for (int j = 0; j < kBoardSize; j++) {
+//      x += kXChange[i];
+//      y += kYChange[i];
+//      if (!InBounds(x, y)) {
+//        break;
+//      }
+//
+//      if (game_board_[x][y].empty()) { // Checks for empty string
+//        break;
+//      } else if (game_board_[x][y] != last_turn_color) {
+//        is_opposite_color_adjacent = true;
+//      } else if (is_opposite_color_adjacent) {
+//        return true;
+//      } else {
+//        break;
+//      }
+//    }
+//  }
+//  return false;
+//}
 
-  for (size_t i = 0; i < kXChange.size(); i++) {
-    bool is_opposite_color_adjacent = false;
-    int x = x_tile_coordinate_;
-    int y = y_tile_coordinate_;
-
-    for (int j = 0; j < kBoardSize; j++) {
-      x += kXChange[i];
-      y += kYChange[i];
-      if (!InBounds(x, y)) {
-        break;
-      }
-
-      if (game_board_[x][y].empty()) { // Checks for empty string
-        break;
-      } else if (game_board_[x][y] != last_turn_color) {
-        is_opposite_color_adjacent = true;
-      } else if (is_opposite_color_adjacent) {
-        return true;
-      } else {
-        break;
-      }
-    }
-  }
-  return false;
-}
-
-vector<pair<int, int>> MyApp::GetValidMoves() {
-  vector<pair<int, int>> moves;
-  for (size_t i = 0; i < kBoardSize; i++) {
-    for (size_t j = 0; j < kBoardSize; j++) {
-      if (game_board_[i][j].empty() && logic::IsMoveValid(reinterpret_cast<int&>(i),
-          reinterpret_cast<int&>(j), is_white_turn_, game_board_)) {
-        moves.emplace_back(i, j);
-      }
-    }
-  }
-  return moves;
-}
+//vector<pair<int, int>> MyApp::GetValidMoves() {
+//  vector<pair<int, int>> moves;
+//  for (size_t i = 0; i < kBoardSize; i++) {
+//    for (size_t j = 0; j < kBoardSize; j++) {
+//      if (game_board_[i][j].empty() && logic::IsMoveValid(reinterpret_cast<int&>(i),
+//          reinterpret_cast<int&>(j), is_white_turn_, game_board_)) {
+//        moves.emplace_back(i, j);
+//      }
+//    }
+//  }
+//  return moves;
+//}
 
 bool MyApp::IsGameOver() {
   return (white_score_ + black_score_ == (kBoardSize * kBoardSize));
@@ -342,11 +343,11 @@ void MyApp::EndGameAndAddToLeaderboard() {
   }
 }
 
-void MyApp::SetGameBoard(const vector<vector<string>>& board) {
-  game_board_ = board;
-}
-vector<vector<string>> MyApp::GetGameBoard() {
-  return game_board_;
-}
+//void MyApp::SetGameBoard(const vector<vector<string>>& board) {
+//  game_board_ = board;
+//}
+//vector<vector<string>> MyApp::GetGameBoard() {
+//  return game_board_;
+//}
 
 }  // namespace myapp

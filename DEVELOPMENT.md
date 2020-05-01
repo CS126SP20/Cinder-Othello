@@ -69,11 +69,15 @@
     - Update README
     - Unit testing
  
- - **04/30/2020** Added documentation for methods in myapp
-    - Look into adding getter and setter methods to help you with unit
-    testing the more logical side of your code
+ - **04/30/2020** Added documentation for methods in myapp. Created 
+ logic.cc and logic.h for logical methods that would be easier to
+ use in their own file and can be tested. Reset functionality 
+ fully working.
     - Add rules in the side panel for users to see
-    - Update README
+    - Update README.md
+    - Add PROPOSAL.md
+    - Add unit tests
+    - Add more comments throughout code, where necessary
     - Methods I can actually unit test: FlipPieces(return the board),
     UpdateScores(return one of the scores or a pair of score), InBounds,
     IsMoveValid (pass in the board and white turn as parameters), 

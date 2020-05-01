@@ -35,13 +35,34 @@ vector<vector<string>> FlipPieces(int& x_tile_coordinate_,
  * @return
  */
 bool InBounds(int x, int y);
+//
+///**
+// *
+// * @param game_board_
+// * @param white_score_
+// * @param black_score_
+// * @return
+// */
+//pair<int, int> UpdateScores(vector<vector<string>>& game_board_,
+//                                    int& white_score_, int& black_score_);
 
-pair<int, int> UpdateScores(vector<vector<string>>& game_board_,
-                                    int& white_score_, int& black_score_);
-
+/**
+ *
+ * @param x_tile_coordinate_
+ * @param y_tile_coordinate_
+ * @param is_white_turn_
+ * @param game_board_
+ * @return
+ */
 bool IsMoveValid(int& x_tile_coordinate_, int& y_tile_coordinate_,
     bool& is_white_turn_, vector<vector<string>>& game_board_);
 
+/**
+ *
+ * @param game_board_
+ * @param is_white_turn_
+ * @return
+ */
 vector<pair<int, int>> GetValidMoves(vector<vector<string>>& game_board_,
                                      bool is_white_turn_);
 

@@ -70,39 +70,39 @@ class MyApp : public cinder::app::App {
    */
   void DrawBoard();
 
-  /**
-   *
-   * @param x_tile_coordinate_
-   * @param y_tile_coordinate_
-   */
-  void FlipPieces(int& x_tile_coordinate_, int& y_tile_coordinate_);
+//  /**
+//   *
+//   * @param x_tile_coordinate_
+//   * @param y_tile_coordinate_
+//   */
+//  void FlipPieces(int& x_tile_coordinate_, int& y_tile_coordinate_);
 
-  /**
-   *
-   * @param x
-   * @param y
-   * @return
-   */
-  bool InBounds(int x, int y);
+//  /**
+//   *
+//   * @param x
+//   * @param y
+//   * @return
+//   */
+//  bool InBounds(int x, int y);
 
   /**
    *
    */
   void UpdateScores();
 
-  /**
-   *
-   * @param x_tile_coordinate_
-   * @param y_tile_coordinate_
-   * @return
-   */
-  bool IsMoveValid(int& x_tile_coordinate_, int& y_tile_coordinate_);
+//  /**
+//   *
+//   * @param x_tile_coordinate_
+//   * @param y_tile_coordinate_
+//   * @return
+//   */
+//  bool IsMoveValid(int& x_tile_coordinate_, int& y_tile_coordinate_);
 
-  /**
-   *
-   * @return
-   */
-  vector<pair<int, int>> GetValidMoves();
+//  /**
+//   *
+//   * @return
+//   */
+//  vector<pair<int, int>> GetValidMoves();
 
   /**
    *
@@ -141,9 +141,9 @@ class MyApp : public cinder::app::App {
    */
   void EndGameAndAddToLeaderboard();
 
-  void SetGameBoard(const vector<vector<string>>& board);
-
-  vector<vector<string>> GetGameBoard();
+//  void SetGameBoard(const vector<vector<string>>& board);
+//
+//  vector<vector<string>> GetGameBoard();
 
 
 

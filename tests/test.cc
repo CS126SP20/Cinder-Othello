@@ -11,9 +11,10 @@ using std::vector;
 using std::pair;
 
 TEST_CASE("Random sanity test", "[random]") {
+  const int kBoardSize = 8;
   vector<vector<string>> starting_board;
-  vector<string> v(8, "");
-  for (size_t i = 0; i < 8; i++) {
+  vector<string> v(kBoardSize, "");
+  for (size_t i = 0; i < kBoardSize; i++) {
     starting_board.push_back(v);
   }
   starting_board[3][3] = "white";
@@ -28,4 +29,19 @@ TEST_CASE("Random sanity test", "[random]") {
   valid_moves.emplace_back(5, 4);
 
   REQUIRE(logic::GetValidMoves(starting_board, false) == valid_moves);
+
+  SECTION("full board") {
+
+    for (size_t i = 0; i < kBoardSize; i++) {
+      for (size_t j = 0; j < kBoardSize; j++) {
+        if (i % 2 == 0) {
+          starting_board[j][i] = "white";
+        } else {
+          starting_board[j][i] = "black";
+        }
+      }
+    }
+    valid_moves.clear();
+    REQUIRE(logic::GetValidMoves(starting_board, false) == valid_moves);
+  }
 }

@@ -9,7 +9,6 @@ namespace logic {
 vector<vector<string>> FlipPieces(int& x_tile_coordinate_,
     int& y_tile_coordinate_, bool& is_white_turn_,
     vector<vector<string>>& game_board_) {
-
   string last_turn_color = "black";
   if (is_white_turn_) {
     last_turn_color = "white";
@@ -49,24 +48,24 @@ bool InBounds(int x, int y) {
   return (x >= 0) && (x < kBoardSize) && (y >= 0) && (y < kBoardSize);
 }
 
-pair<int, int> UpdateScores(vector<vector<string>>& game_board_,
-    int& white_score_, int& black_score_) {
-  pair<int, int> scores;
-  white_score_ = 0;
-  black_score_ = 0;
-  for (size_t i = 0; i < kBoardSize; i++) {
-    for (size_t j = 0; j < kBoardSize; j++) {
-      if (game_board_[j][i] == "white") {
-        white_score_++;
-      } else if (game_board_[j][i] == "black") {
-        black_score_++;
-      }
-    }
-  }
-  scores.first = white_score_;
-  scores.second = black_score_;
-  return scores;
-}
+//pair<int, int> UpdateScores(vector<vector<string>>& game_board_,
+//    int& white_score_, int& black_score_) {
+//  pair<int, int> scores;
+//  white_score_ = 0;
+//  black_score_ = 0;
+//  for (size_t i = 0; i < kBoardSize; i++) {
+//    for (size_t j = 0; j < kBoardSize; j++) {
+//      if (game_board_[j][i] == "white") {
+//        white_score_++;
+//      } else if (game_board_[j][i] == "black") {
+//        black_score_++;
+//      }
+//    }
+//  }
+//  scores.first = white_score_;
+//  scores.second = black_score_;
+//  return scores;
+//}
 
 bool IsMoveValid(int& x_tile_coordinate_, int& y_tile_coordinate_,
                  bool& is_white_turn_, vector<vector<string>>& game_board_) {
