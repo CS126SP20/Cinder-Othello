@@ -81,8 +81,11 @@
     - Methods I can actually unit test: FlipPieces(return the board),
     UpdateScores(return one of the scores or a pair of score), InBounds,
     IsMoveValid (pass in the board and white turn as parameters), 
-    GetValidMoves(pass in the board), 
+    GetValidMoves (pass in the board), 
  
  - **05/01/2020**
+    - [] Migrate appropriate methods from my_app.cc to logic.cc
+    and then add any changes to parameters, if necessary
+    
  
     
