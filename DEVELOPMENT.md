@@ -81,7 +81,8 @@
     - [] Migrate appropriate methods from my_app.cc to logic.cc
     and then add any changes to parameters, if necessary
     
- - **05/02/2020** 
+ - **05/02/2020** Added helper method in tests to fill the game board using
+ maps in order to prevent repetitive code.
     
  
     
