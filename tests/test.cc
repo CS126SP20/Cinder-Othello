@@ -2,8 +2,6 @@
 
 #define CATCH_CONFIG_MAIN
 
-#include <cinder/Rand.h>
-#include <mylibrary/scoreboard.h>
 #include <catch2/catch.hpp>
 #include <mylibrary/logic.h>
 
@@ -17,10 +15,13 @@ const int kBoardSize = 8;
 const bool is_white_turn = false;
 
 /**
+ * This method is used in order to avoid having to repeat code for filling in
+ * the game board. It first fills the board with all empty strings, then uses
+ * the map to fill in spots with "black" or "white", indicated by the coords.
  *
- *
- * @param coord_to_color_map
- * @return
+ * @param coord_to_color_map This is a map of a pair of integers (representing
+ * coordinates) to strings of the color at that coordinate
+ * @return a filled game board using the map that was passed in
  */
 vector<vector<string>> FillGameBoard(const map<pair<int, int>, string>&
     coord_to_color_map) {
@@ -38,11 +39,12 @@ vector<vector<string>> FillGameBoard(const map<pair<int, int>, string>&
   return game_board;
 }
 
-/**
+/** This method takes a given game board and fills every spot with black or
+ * white to represent a full game board. Used for testing edge cases with a full
+ * board.
  *
- *
- * @param game_board
- * @return
+ * @param game_board the state of the game board
+ * @return a completely filled (with "black" and "white" pieces) game board
  */
 vector<vector<string>> GetFullBoard(vector<vector<string>>& game_board) {
   // Fills the entire game board with black or white
@@ -65,12 +67,9 @@ TEST_CASE("Valid moves can be found", "[valid-moves]") {
          {make_pair(4, 3), "black"},
          {make_pair(4, 4), "white"}};
   vector<vector<string>> game_board = FillGameBoard(coord_to_color_map);
-
-  vector<pair<int, int>> valid_move_coords;
-  valid_move_coords.emplace_back(2, 3);
-  valid_move_coords.emplace_back(3, 2);
-  valid_move_coords.emplace_back(4, 5);
-  valid_move_coords.emplace_back(5, 4);
+  // The vector of pairs of ints represents the expected valid move coordinates
+  vector<pair<int, int>> valid_move_coords = {{2, 3}, {3, 2},
+                                              {4, 5}, {5, 4}};
 
   SECTION("Find valid moves on a normal board") {
     REQUIRE(logic::GetValidMoves(game_board, false) == valid_move_coords);
@@ -79,6 +78,9 @@ TEST_CASE("Valid moves can be found", "[valid-moves]") {
   SECTION("Find valid moves on a full board") {
     game_board = GetFullBoard(game_board);
     valid_move_coords.clear();
+
+    // In a full board, there should be no valid moves, which is why
+    // valid_move_coords was cleared
     REQUIRE(logic::GetValidMoves(game_board, false) == valid_move_coords);
   }
 }
@@ -115,6 +117,7 @@ TEST_CASE("Pieces on the game board can be flipped", "[flip-pieces]") {
   SECTION("Flip pieces on a completely full board") {
     game_board = GetFullBoard(game_board);
 
+    // If the board is full, no pieces should be flipped, regardless of the move
     REQUIRE(logic::FlipPieces(x_move, y_move, is_white_turn, game_board)
             == game_board);
   }
@@ -159,7 +162,7 @@ TEST_CASE("Checks if Coordinates Are In Bounds", "[in-bounds]") {
 
   SECTION("Out of Bounds Coordinates") {
     y_coord = 10;
-    
+
     // Checks for out-of-bounds coordinates (x or y greater than 7)
     REQUIRE(!logic::InBounds(x_coord, y_coord));
   }
