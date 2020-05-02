@@ -68,7 +68,7 @@ bool InBounds(int x, int y) {
 //}
 
 bool IsMoveValid(int& x_tile_coordinate_, int& y_tile_coordinate_,
-                 bool& is_white_turn_, vector<vector<string>>& game_board_) {
+                 bool is_white_turn_, vector<vector<string>>& game_board_) {
   if (!InBounds(x_tile_coordinate_, y_tile_coordinate_)) {
     return false;
   }

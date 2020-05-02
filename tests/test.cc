@@ -31,13 +31,27 @@ vector<vector<string>> FillGameBoard(const map<pair<int, int>, string>&
   return game_board;
 }
 
+vector<vector<string>> GetFullBoard(vector<vector<string>>& game_board) {
+  // Fills the entire game board with black or white
+  for (size_t i = 0; i < kBoardSize; i++) {
+    for (size_t j = 0; j < kBoardSize; j++) {
+      if (i % 2 == 0) {
+        game_board[j][i] = "white";
+      } else {
+        game_board[j][i] = "black";
+      }
+    }
+  }
+  return game_board;
+}
+
 TEST_CASE("Valid moves can be found", "[valid-moves]") {
   map<pair<int, int>, string> coord_to_color_map
       = {{make_pair(3, 3), "white"},
          {make_pair(3, 4), "black"},
          {make_pair(4, 3), "black"},
          {make_pair(4, 4), "white"}};
-  
+
   vector<vector<string>> game_board = FillGameBoard(coord_to_color_map);
 //  vector<vector<string>> starting_board;
 //  vector<string> v(kBoardSize, "");
@@ -58,19 +72,11 @@ TEST_CASE("Valid moves can be found", "[valid-moves]") {
 
   REQUIRE(logic::GetValidMoves(game_board, false) == valid_moves);
 
-//  SECTION("full board") {
-//    for (size_t i = 0; i < kBoardSize; i++) {
-//      for (size_t j = 0; j < kBoardSize; j++) {
-//        if (i % 2 == 0) {
-//          starting_board[j][i] = "white";
-//        } else {
-//          starting_board[j][i] = "black";
-//        }
-//      }
-//    }
-//    valid_moves.clear();
-//    REQUIRE(logic::GetValidMoves(starting_board, false) == valid_moves);
-//  }
+  SECTION("full board") {
+    game_board = GetFullBoard(game_board);
+    valid_moves.clear();
+    REQUIRE(logic::GetValidMoves(game_board, false) == valid_moves);
+  }
 }
 
 TEST_CASE("Pieces on the game board can be flipped", "[flip-pieces]") {
@@ -102,6 +108,24 @@ TEST_CASE("Pieces on the game board can be flipped", "[flip-pieces]") {
 
   REQUIRE(logic::FlipPieces(x_move, y_move, true, starting_board)
           == expected_game_board);
+}
+
+TEST_CASE("Is Move Valid", "[is-move-valid]") {
+  map<pair<int, int>, string> coord_to_color_map
+      = {{make_pair(3, 3), "white"},
+         {make_pair(3, 4), "black"},
+         {make_pair(4, 3), "black"},
+         {make_pair(4, 4), "white"}};
+
+  vector<vector<string>> game_board = FillGameBoard(coord_to_color_map);
+
+  int x_move = 2;
+  int y_move = 3;
+  REQUIRE(logic::IsMoveValid(x_move, y_move, false, game_board));
+  y_move = 2;
+  REQUIRE(!logic::IsMoveValid(x_move, y_move, false, game_board));
+  game_board = GetFullBoard(game_board);
+  REQUIRE(!logic::IsMoveValid(x_move, y_move, false, game_board));
 }
 
 TEST_CASE("In bounds", "[in-bounds]") {
