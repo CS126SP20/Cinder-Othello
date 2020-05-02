@@ -45,3 +45,31 @@ TEST_CASE("Valid moves can be found", "[valid-moves]") {
   }
 }
 
+TEST_CASE("Pieces on the game board can be flipped", "[flip-pieces]") {
+  const int kBoardSize = 8;
+  vector<vector<string>> starting_board;
+  vector<string> v(kBoardSize, "");
+  for (size_t i = 0; i < kBoardSize; i++) {
+    starting_board.push_back(v);
+  }
+  starting_board[3][2] = "black";
+  starting_board[3][3] = "black";
+  starting_board[3][4] = "black";
+  starting_board[4][3] = "black";
+  starting_board[4][4] = "white";
+  starting_board[2][2] = "white";
+  // Creates the game board with the same pieces (before any flips)
+  vector<vector<string>> expected_game_board = starting_board;
+  // This is the piece that should flip to white if the last move was (2, 2)
+  expected_game_board[3][3] = "white";
+  int x_move = 2;
+  int y_move = 2;
+
+  REQUIRE(logic::FlipPieces(x_move, y_move, true, starting_board)
+          == expected_game_board);
+}
+
+TEST_CASE("In bounds", "[in-bounds]") {
+  REQUIRE(logic::InBounds(4, 4)); // Checks for in-bounds coordinates
+  REQUIRE(!logic::InBounds(9, 1)); // Checks for out-of-bounds coordinates
+}

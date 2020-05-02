@@ -65,27 +65,23 @@
  as score. Added a panel on the side of the game to display score
  and messages to users. Added sound effects for placing a piece
  and for game over. Added reset button and method.
-    - [] Add documentation in header files
-    - [] Update README
-    - [] Unit testing
+    - [] Add documentation in header files for methods
  
  - **04/30/2020** Added documentation for methods in myapp. Created 
  logic.cc and logic.h for logical methods that would be easier to
  use in their own file and can be tested. Reset functionality 
  fully working.
-    - [] Add rules in the side panel for users to see
     - [] Update README.md
-    - [] Add PROPOSAL.md
-    - [] Add unit tests
+    - [x] Add PROPOSAL.md
+    - [] Add more unit tests and create a helper method to make them 
+    easier to read
     - [] Add more comments throughout code, where necessary
-    - Methods I can actually unit test: FlipPieces(return the board),
-    UpdateScores(return one of the scores or a pair of score), InBounds,
-    IsMoveValid (pass in the board and white turn as parameters), 
-    GetValidMoves (pass in the board), 
  
- - **05/01/2020**
+ - **05/01/2020** Added PROPOSAL.md to project. Improved README.md
     - [] Migrate appropriate methods from my_app.cc to logic.cc
     and then add any changes to parameters, if necessary
+    
+ - **05/02/2020** 
     
  
     
