@@ -15,7 +15,7 @@ layout.
 ## **Table of Contents**
 - [Getting Started](#getting-started)
     - [Downloading Cinder](#downloading-cinder-and-setting-up-othello)
-    - [Setting up the SQLite Database](#setting-up-the-sqlitehttpswwwsqliteorgindexhtml-database)
+    - [Setting up the SQLite Database](#setting-up-the-sqlite-database)
     - [Adding the SQLite and sql_modern_cpp dependencies](#adding-the-sqlite-and-sqlite_modern_cpp-dependencies)
 - [How to Play the Game](#how-to-play-the-game)    
 
