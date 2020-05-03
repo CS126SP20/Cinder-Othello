@@ -107,7 +107,6 @@ void MyApp::mouseMove(MouseEvent event) {
     // The whole game board if they were to click on this piece
     potential_game_board_ = logic::FlipPieces(x_pos, y_pos,
         is_white_turn_, game_board_);
-
     // This if-else block turns the current tile that the user is on into
     // white or black if it's a valid move
     if (is_white_turn_) {

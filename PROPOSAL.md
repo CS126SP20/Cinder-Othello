@@ -39,11 +39,14 @@ I hope to check for valid moves and show the user what a valid move
 is, since sometimes it is difficult to tell what a valid move is. 
 This is going to be a challenging step in the project. 
 
-Some stretch goals would be to have reset functionality, 
+Some stretch goals would be to have reset functionality, users
+seeing the effects of their moves when they hover over a move,
 high-level graphics, and lastly an AI to play against the user, 
 although these would only be if I finish early. 
 For reset functionality, I would reset the game and allow 
-players to play again. I could also try to improve my UI design 
+players to play again. For hovering over functionality,
+I would need to figure out how to get the mouse's position
+at any given time in Cinder. I could also try to improve my UI design 
 if I get time, such as a start menu that gives the game a more 
 appealing look. The AI would be a smart player that would attempt 
 to use optimal Othello strategy to beat the user.

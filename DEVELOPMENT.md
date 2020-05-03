@@ -87,7 +87,15 @@
  when they hover over a potential move.
     - [x] Continue to Update README.md
     
- 
+ - **05/03/2020** Completed README.md with instructions on how to play the game
+ and more instructions/details on the set-up of the game. Finalized logic.cc
+ and logic.h to move appropriate methods from my_app.
+    - [] Add documentation in header files for methods
+    - [x] Delete any unused code that is commented out
+    
+ - **05/05/2020**
+    - [] Review all files in the code to ensure they are up to standard
+    - [] Submit the project to Gradescope!   
     
     
  

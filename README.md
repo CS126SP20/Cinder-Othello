@@ -14,9 +14,9 @@ layout.
 
 ## **Table of Contents**
 - [Getting Started](#getting-started)
-    - [Downloading Cinder](#downloading-cinder)
+    - [Downloading Cinder](#downloading-cinder-and-setting-up-othello)
     - [Setting up the SQLite Database](#setting-up-the-sqlitehttpswwwsqliteorgindexhtml-database)
-    - [Adding the SQLite and sql_modern_cpp dependencies](#adding-the-sqlite-and-sql_modern_cpp-dependencies)
+    - [Adding the SQLite and sql_modern_cpp dependencies](#adding-the-sqlite-and-sqlite_modern_cpp-dependencies)
 - [How to Play the Game](#how-to-play-the-game)    
 
 ## **Getting Started**
@@ -125,7 +125,34 @@ NOTE: It is important that your variable names are all lowercase for FetchConten
 The FetchContent_Populate(<name>) method will convert <name> into lowercase, so just make all of the names lowercase. 
 See more here: https://cmake.org/pipermail/cmake/2018-March/067185.html.
 
+## **How to Play the Game** ##
 
+For the full rules of Othello (also commonly known as Reversi), click [here](https://en.wikipedia.org/wiki/Reversi).
+
+###### **Quick Summary of the Rules:** 
+
+    - There are two players, one will be black and the other will be white
+    - The goal of the game is to try to have the most pieces at the end
+    - Players will alternate turns, unless a player has no valid moves 
+    (in this case, the other player will go again)
+    - A valid move is defined as a move that flips pieces of the other color
+    - Pieces can only be flipped if there is a piece of your color on the 
+    opposite side, leaving pieces of the opposite color in the middle
+    
+###### **Features of my game**
+
+ - You can only click on valid moves. Valid moves are indicated by circles
+ that are not filled in.
+ - When you hover over a valid move, you can see what the board would
+ look like if you played that move.
+ - The scores and whose turn it is will be kept track of 
+ in the panel to the right side
+ - Once the game has finished, the result of the game will be populated 
+ into a sqlite database (scoreboard.db), with the winner, loser, and
+ the winner's score
+ - When the game has ended, a restart button will appear, allowing you to play
+ again without restarting the Cinder application
+ - There are sounds that will be played throughout the game! Have fun!
  
   
    
