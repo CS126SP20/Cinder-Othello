@@ -2,22 +2,22 @@
 
 ---
 
- - **04/19/20** Set up sqlite3 and sqlite_modern_cpp libraries with project
+ - **04/19/20** Set up sqlite3 and sqlite_modern_cpp libraries with project.
    - [x] Still need to update schemas and test query entering data
 
  - **04/20/20** Updated schema for database and got queries working
 
- - **04/21/20** Add method to print text to Cinder screen
+ - **04/21/20** Add method to print text to Cinder screen.
    - [x] Need to figure out how to display an image on to the screen; 
    currently getting errors
    
  - **04/22/20** Got game board png to become visible on the screen and 
- learned how to display circles for the game
+ learned how to display circles for the game.
     - [x] Need to figure out how to place circles at certain spots on the board
     when the player clicks
     
  - **04/23/2020** Created a 2D vector to represent the board state and
- populated it with blank strings initially to represent empty tiles
+ populated it with blank strings initially to represent empty tiles.
     - [x] Need to figure out how to have pieces display when the user clicks
     a certain tile; have figured out the logic for this, now I need to
     implement
@@ -65,24 +65,30 @@
  as score. Added a panel on the side of the game to display score
  and messages to users. Added sound effects for placing a piece
  and for game over. Added reset button and method.
-    - [] Add documentation in header files for methods
  
  - **04/30/2020** Added documentation for methods in myapp. Created 
  logic.cc and logic.h for logical methods that would be easier to
  use in their own file and can be tested. Reset functionality 
  fully working.
-    - [] Update README.md
     - [x] Add PROPOSAL.md
-    - [] Add more unit tests and create a helper method to make them 
-    easier to read
-    - [] Add more comments throughout code, where necessary
+    - [x] Add more unit tests and create a helper method using maps of 
+    coordinates to strings of colors to avoid repitition
+    - [x] Add more comments throughout code, where necessary
  
- - **05/01/2020** Added PROPOSAL.md to project. Improved README.md
-    - [] Migrate appropriate methods from my_app.cc to logic.cc
+ - **05/01/2020** Added PROPOSAL.md to project. Improved README.md.
+    - [x] Migrate appropriate methods from my_app.cc to logic.cc
     and then add any changes to parameters, if necessary
+    - [x] Add effects when hovering over valid moves
     
  - **05/02/2020** Added helper method in tests to fill the game board using
- maps in order to prevent repetitive code.
+ maps in order to prevent repetitive code. Add helper method to fill in the
+ game board completely and used it to test for edge cases. Documented all tests.
+ Added mouseMove method so that the user can see the effects of their moves
+ when they hover over a potential move.
+    - [x] Continue to Update README.md
+    
+ 
+    
     
  
     

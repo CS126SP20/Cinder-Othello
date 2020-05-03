@@ -63,6 +63,11 @@ class MyApp : public cinder::app::App {
    */
   void mouseDown(cinder::app::MouseEvent) override;
 
+  /**
+   *
+   */
+  void mouseMove(cinder::app::MouseEvent) override;
+
  private:
 
   /**
@@ -70,39 +75,10 @@ class MyApp : public cinder::app::App {
    */
   void DrawBoard();
 
-//  /**
-//   *
-//   * @param x_tile_coordinate_
-//   * @param y_tile_coordinate_
-//   */
-//  void FlipPieces(int& x_tile_coordinate_, int& y_tile_coordinate_);
-
-//  /**
-//   *
-//   * @param x
-//   * @param y
-//   * @return
-//   */
-//  bool InBounds(int x, int y);
-
   /**
    *
    */
   void UpdateScores();
-
-//  /**
-//   *
-//   * @param x_tile_coordinate_
-//   * @param y_tile_coordinate_
-//   * @return
-//   */
-//  bool IsMoveValid(int& x_tile_coordinate_, int& y_tile_coordinate_);
-
-//  /**
-//   *
-//   * @return
-//   */
-//  vector<pair<int, int>> GetValidMoves();
 
   /**
    *
@@ -141,12 +117,7 @@ class MyApp : public cinder::app::App {
    */
   void EndGameAndAddToLeaderboard();
 
-//  void SetGameBoard(const vector<vector<string>>& board);
-//
-//  vector<vector<string>> GetGameBoard();
-
-
-
+ private:
   othello::Scoreboard leaderboard_;
   cinder::gl::Texture2dRef background_;
   cinder::gl::Texture2dRef reset_;
@@ -170,6 +141,9 @@ class MyApp : public cinder::app::App {
   // which a piece can move; used to show valid moves to the players
   const vector<int> kXChange{-1, 0, 1, -1, 1, -1, 0, 1};
   const vector<int> kYChange{-1, -1, -1, 0, 0, 1, 1, 1};
+  // Potential game board acts as the game board if the user was to play a
+  // move. They are able to see what happens when they hover over a valid move.
+  vector<vector<string>> potential_game_board_;
 };
 
 }  // namespace myapp

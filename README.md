@@ -12,15 +12,16 @@ layout.
 
 ---
 
-### **Table of Contents**
+## **Table of Contents**
 - [Getting Started](#getting-started)
     - [Downloading Cinder](#downloading-cinder)
     - [Setting up the SQLite Database](#setting-up-the-sqlitehttpswwwsqliteorgindexhtml-database)
     - [Adding the SQLite and sql_modern_cpp dependencies](#adding-the-sqlite-and-sql_modern_cpp-dependencies)
+- [How to Play the Game](#how-to-play-the-game)    
 
-### **Getting Started**
+## **Getting Started**
 
-#### Downloading Cinder ####
+### Downloading Cinder and Setting Up Othello ###
 
 1. Download [Cinder (v0.9.2)](https://libcinder.org/) for your platform. 
 Extract the downloaded item into a folder. 
@@ -50,7 +51,7 @@ In this case, try doing: Edit configurations -> Executable -> Select Other ->
 Find ```my-projects/final-project/cmake-build-debug/Debug/cinder-final-project/Contents/MacOS/cinder-final-project``` 
 And click run once again.
 
-#### Setting up the [SQLite](https://www.sqlite.org/index.html) Database ####
+### Setting up the [SQLite](https://www.sqlite.org/index.html) Database ###
 
 1. In CLion, navigate to View > Tool Windows > Database.
 2. Next, in the Database window, select the Database properties button, 
@@ -65,7 +66,7 @@ Step 4. ii. If there are no database properties selected, navigate to Add > SQLi
 You should now be able to see the schema of the database under snake.db > schemas > main > scoreboard. 
 Also, you’ll be able to manually execute queries by clicking the Jump to Console button at the top.
 
-#### Adding the SQLite and sql_modern_cpp dependencies ####
+### Adding the SQLite and sqlite_modern_cpp dependencies ###
 
 In final-project-kaahanmotwani/CMakeLists.txt:
 
@@ -123,3 +124,9 @@ that sqlite and sqlite_modern_cpp defines.
 NOTE: It is important that your variable names are all lowercase for FetchContent. 
 The FetchContent_Populate(<name>) method will convert <name> into lowercase, so just make all of the names lowercase. 
 See more here: https://cmake.org/pipermail/cmake/2018-March/067185.html.
+
+
+ 
+  
+   
+

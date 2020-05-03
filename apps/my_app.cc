@@ -16,10 +16,6 @@ void MyApp::setup() {
   SetInitialGameBoard();
   valid_moves_ = logic::GetValidMoves(game_board_, is_white_turn_);
   UpdateScores();
-//  pair<int, int> scores = logic::UpdateScores(game_board_,
-//                                              white_score_, black_score_);
-//  white_score_ = scores.first;
-//  black_score_ = scores.second;
 
   background_ = gl::Texture2d::create(loadImage
       (loadAsset("othello_board.png")));
@@ -48,12 +44,10 @@ void MyApp::draw() {
 }
 
 void MyApp::mouseDown(cinder::app::MouseEvent event) {
-
   if (IsGameOver() && event.getX() >= 810 && event.getX() <= 910
       && event.getY() >= 450 && event.getY() <= 550) {
     ResetGame();
   }
-
   int x_tile_coordinate_ = event.getX();
   int y_tile_coordinate_ = event.getY();
 
@@ -72,16 +66,10 @@ void MyApp::mouseDown(cinder::app::MouseEvent event) {
     } else {
       game_board_[x_tile_coordinate_][y_tile_coordinate_] = "black";
     }
-    //FlipPieces(x_tile_coordinate_, y_tile_coordinate_);
+
     game_board_ = logic::FlipPieces(x_tile_coordinate_,
         y_tile_coordinate_, is_white_turn_, game_board_);
-    //call update scores here
     UpdateScores();
-//    pair<int, int> scores = logic::UpdateScores(game_board_,
-//        white_score_, black_score_);
-//    white_score_ = scores.first;
-//    black_score_ = scores.second;
-
   } else {
     is_white_turn_ = !is_white_turn_;
   }
@@ -95,6 +83,38 @@ void MyApp::mouseDown(cinder::app::MouseEvent event) {
 
   if (IsGameOver()) {
     EndGameAndAddToLeaderboard();
+  }
+}
+
+void MyApp::mouseMove(MouseEvent event) {
+  int x_pos = event.getX();
+  int y_pos = event.getY();
+  x_pos = x_pos / kTileLength;
+  y_pos = y_pos / kTileLength;
+
+  // Fills the potential game board with empty strings every time the mouse
+  // moves. If the user hovers over a valid move, then the appropriate pieces
+  // in potential game board will be filled to show what the game board
+  // would look like if they moved there.
+  for (size_t i = 0; i < kBoardSize; i++) {
+    for (size_t j = 0; j < kBoardSize; j++) {
+      potential_game_board_[j][i] = "";
+    }
+  }
+
+  if (logic::IsMoveValid(x_pos, y_pos, is_white_turn_,
+      game_board_)) {
+    // The whole game board if they were to click on this piece
+    potential_game_board_ = logic::FlipPieces(x_pos, y_pos,
+        is_white_turn_, game_board_);
+
+    // This if-else block turns the current tile that the user is on into
+    // white or black if it's a valid move
+    if (is_white_turn_) {
+      potential_game_board_[x_pos][y_pos] = "white";
+    } else {
+      potential_game_board_[x_pos][y_pos] = "black";
+    }
   }
 }
 
@@ -130,6 +150,15 @@ void MyApp::DrawBoard() {
         gl::color(Color(0,0,0));
         gl::drawSolidCircle( vec2(xPos, yPos), kCirclePieceRadius);
       }
+
+      if (potential_game_board_[i][j] == "white") {
+        gl::color(Color(1,1,1));
+        gl::drawSolidCircle( vec2(xPos, yPos), kCirclePieceRadius);
+      } else if (potential_game_board_[i][j] == "black") {
+        gl::color(Color(0,0,0));
+        gl::drawSolidCircle( vec2(xPos, yPos), kCirclePieceRadius);
+      }
+
     }
   }
 
@@ -145,45 +174,6 @@ void MyApp::DrawBoard() {
   }
 }
 
-//void MyApp::FlipPieces(int& x_tile_coordinate_, int& y_tile_coordinate_) {
-//  string last_turn_color = "black";
-//  if (is_white_turn_) {
-//    last_turn_color = "white";
-//  }
-//  vector<pair<int, int>> to_flip;
-//
-//  for (size_t i = 0; i < kXChange.size(); i++) {
-//    int x = x_tile_coordinate_;
-//    int y = y_tile_coordinate_;
-//
-//    for (int j = 0; j < kBoardSize; j++) {
-//      x += kXChange[i];
-//      y += kYChange[i];
-//
-//      if (!InBounds(x, y)) {
-//        break;
-//      }
-//      if (game_board_[x][y].empty()) { // Checks for empty string
-//        break;
-//      } else if (game_board_[x][y] != last_turn_color) {
-//        to_flip.emplace_back(x, y); // Adds the pair of coordinates to to_flip
-//      } else { // == lastTurnColor
-//        for (const auto& pair : to_flip) {
-//          game_board_[pair.first][pair.second] = last_turn_color;
-//        }
-//        break;
-//      }
-//    }
-//    to_flip.clear();
-//  }
-//
-//  UpdateScores();
-//}
-
-//bool MyApp::InBounds(int x, int y) {
-//  return (x >= 0) && (x < kBoardSize) && (y >= 0) && (y < kBoardSize);
-//}
-
 void MyApp::UpdateScores() {
   white_score_ = 0;
   black_score_ = 0;
@@ -197,59 +187,6 @@ void MyApp::UpdateScores() {
     }
   }
 }
-
-//bool MyApp::IsMoveValid(int& x_tile_coordinate_, int& y_tile_coordinate_) {
-//  if (!InBounds(x_tile_coordinate_, y_tile_coordinate_)) {
-//    return false;
-//  }
-//  string last_turn_color = "black";
-//  if (is_white_turn_) {
-//    last_turn_color = "white";
-//  }
-//  // If there's already a piece at that spot on the board, it is not
-//  // possible for it to be a valid move.
-//  if (!game_board_[x_tile_coordinate_][y_tile_coordinate_].empty()) {
-//    return false;
-//  }
-//
-//  for (size_t i = 0; i < kXChange.size(); i++) {
-//    bool is_opposite_color_adjacent = false;
-//    int x = x_tile_coordinate_;
-//    int y = y_tile_coordinate_;
-//
-//    for (int j = 0; j < kBoardSize; j++) {
-//      x += kXChange[i];
-//      y += kYChange[i];
-//      if (!InBounds(x, y)) {
-//        break;
-//      }
-//
-//      if (game_board_[x][y].empty()) { // Checks for empty string
-//        break;
-//      } else if (game_board_[x][y] != last_turn_color) {
-//        is_opposite_color_adjacent = true;
-//      } else if (is_opposite_color_adjacent) {
-//        return true;
-//      } else {
-//        break;
-//      }
-//    }
-//  }
-//  return false;
-//}
-
-//vector<pair<int, int>> MyApp::GetValidMoves() {
-//  vector<pair<int, int>> moves;
-//  for (size_t i = 0; i < kBoardSize; i++) {
-//    for (size_t j = 0; j < kBoardSize; j++) {
-//      if (game_board_[i][j].empty() && logic::IsMoveValid(reinterpret_cast<int&>(i),
-//          reinterpret_cast<int&>(j), is_white_turn_, game_board_)) {
-//        moves.emplace_back(i, j);
-//      }
-//    }
-//  }
-//  return moves;
-//}
 
 bool MyApp::IsGameOver() {
   return (white_score_ + black_score_ == (kBoardSize * kBoardSize));
@@ -321,10 +258,11 @@ void MyApp::ResetGame() {
 }
 
 void MyApp::SetInitialGameBoard() {
-  // Fills game board with empty strings initially
+  // Fills game board and potential game board with empty strings initially
   vector<string> v(kBoardSize, "");
   for (size_t i = 0; i < kBoardSize; i++) {
     game_board_.push_back(v);
+    potential_game_board_.push_back(v);
   }
   // Sets the starting 4 pieces in the middle of the board to white and black
   game_board_[kFirstStartCoord][kFirstStartCoord] = "white";
@@ -345,12 +283,5 @@ void MyApp::EndGameAndAddToLeaderboard() {
     leaderboard_.AddWinnerToScoreBoard(winner, loser, winner_score);
   }
 }
-
-//void MyApp::SetGameBoard(const vector<vector<string>>& board) {
-//  game_board_ = board;
-//}
-//vector<vector<string>> MyApp::GetGameBoard() {
-//  return game_board_;
-//}
 
 }  // namespace myapp

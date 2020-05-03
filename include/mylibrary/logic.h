@@ -29,7 +29,7 @@ namespace logic {
  */
 vector<vector<string>> FlipPieces(int& x_tile_coordinate_,
                                   int& y_tile_coordinate_, bool is_white_turn_,
-                                  vector<vector<string>>& game_board_);
+                                  vector<vector<string>> game_board_);
 
 /**
  *
@@ -38,16 +38,6 @@ vector<vector<string>> FlipPieces(int& x_tile_coordinate_,
  * @return
  */
 bool InBounds(int x, int y);
-//
-///**
-// *
-// * @param game_board_
-// * @param white_score_
-// * @param black_score_
-// * @return
-// */
-//pair<int, int> UpdateScores(vector<vector<string>>& game_board_,
-//                                    int& white_score_, int& black_score_);
 
 /**
  *
@@ -74,7 +64,6 @@ vector<pair<int, int>> GetValidMoves(vector<vector<string>>& game_board_,
 const vector<int> kXChange{-1, 0, 1, -1, 1, -1, 0, 1};
 const vector<int> kYChange{-1, -1, -1, 0, 0, 1, 1, 1};
 const int kBoardSize = 8;
-
 }
 
 #endif  // FINALPROJECT_LOGIC_H
