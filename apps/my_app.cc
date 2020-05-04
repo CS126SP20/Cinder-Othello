@@ -4,19 +4,22 @@
 
 namespace myapp {
 
-audio::VoiceRef music_voice;
+// Note: These variables cannot be placed in header files as private variables,
+// which is why I have placed them here.
+audio::VoiceRef music_voice; // VoiceRef objects for different sounds
 audio::VoiceRef move_voice;
 audio::VoiceRef game_over_voice;
-const char kNormalFont[] = "Arial";
-const char kDbPath[] = "scoreboard.db";
+const char kDbPath[] = "scoreboard.db"; // Name of the scoreboard database
 
+
+// Constructor initializes the scoreboard.db database
 MyApp::MyApp(): leaderboard_{cinder::app::getAssetPath(kDbPath).string()} {}
 
 void MyApp::setup() {
   SetInitialGameBoard();
   valid_moves_ = logic::GetValidMoves(game_board_, is_white_turn_);
   UpdateScores();
-
+  // Creates gl textures that can be drawn to the screen
   background_ = gl::Texture2d::create(loadImage
       (loadAsset("othello_board.png")));
   reset_ = gl::Texture2d::create(loadImage
@@ -25,7 +28,7 @@ void MyApp::setup() {
 }
 
 void MyApp::update() {
-  if (!music_voice->isPlaying()) { // If the music ended, repeat the music
+  if (!music_voice->isPlaying()) { // If the music has ended, repeat the music
     music_voice->start();
   }
 }
@@ -33,10 +36,10 @@ void MyApp::update() {
 void MyApp::draw() {
   gl::clear();
   const Rectf board_bounds(0, 0, kBoardBounds, kBoardBounds);
-  gl::draw(background_, board_bounds);// Draws the game board
+  gl::draw(background_, board_bounds);// Draws the game board each frame
   if (IsGameOver()) {
     const Rectf reset_bounds(810, 450, 910, 550);
-    gl::draw(reset_, reset_bounds);// Draws the reset button
+    gl::draw(reset_, reset_bounds);// Draws the reset button if the game is over
   }
   DrawBoard();
   DrawScoresAndText();
@@ -44,8 +47,14 @@ void MyApp::draw() {
 }
 
 void MyApp::mouseDown(cinder::app::MouseEvent event) {
-  if (IsGameOver() && event.getX() >= 810 && event.getX() <= 910
-      && event.getY() >= 450 && event.getY() <= 550) {
+  // This represents the bounds of the box that the reset button is drawn in
+  const Rectf reset_bounds(810, 450, 910, 550);
+
+  // If the game is over and the reset button is clicked, ResetGame() is invoked
+  if (IsGameOver() && event.getX() >= reset_bounds.getX1()
+    && event.getX() <= reset_bounds.getX2()
+    && event.getY() >= reset_bounds.getY1()
+    && event.getY() <= reset_bounds.getY2()) {
     ResetGame();
   }
   int x_tile_coordinate_ = event.getX();
@@ -57,6 +66,8 @@ void MyApp::mouseDown(cinder::app::MouseEvent event) {
   x_tile_coordinate_ = x_tile_coordinate_ / kTileLength;
   y_tile_coordinate_ = y_tile_coordinate_ / kTileLength;
 
+  // If the user moves (valid move), then show the new valid moves and
+  // update the board, turn, and scores
   if (logic::IsMoveValid(x_tile_coordinate_, y_tile_coordinate_,
       is_white_turn_, game_board_)) {
     PlaySound("click");
@@ -67,16 +78,20 @@ void MyApp::mouseDown(cinder::app::MouseEvent event) {
       game_board_[x_tile_coordinate_][y_tile_coordinate_] = "black";
     }
 
+    // Flips the pieces on the game board based on the move the user played
     game_board_ = logic::FlipPieces(x_tile_coordinate_,
         y_tile_coordinate_, is_white_turn_, game_board_);
     UpdateScores();
   } else {
+    // If the user did not select a valid move, it is still their turn. This
+    // prevents users from playing impossible moves in the game.
     is_white_turn_ = !is_white_turn_;
   }
-  is_white_turn_ = !is_white_turn_;
+  is_white_turn_ = !is_white_turn_; // Changes whose turn it is
   valid_moves_ = logic::GetValidMoves(game_board_, is_white_turn_);
 
   if (valid_moves_.empty()) {
+    // If there are no valid moves, it's the other player's turn again
     is_white_turn_ = !is_white_turn_;
     valid_moves_ = logic::GetValidMoves(game_board_, is_white_turn_);
   }
@@ -120,24 +135,28 @@ void MyApp::mouseMove(MouseEvent event) {
 template <typename C>
 void PrintText(const string& text, const C& color, const cinder::ivec2& size,
                const cinder::vec2& loc) {
+  const string kNormalFont = "Arial";
+  const int kFontSize = 24;
+  const int kHalfBoxSize = 2; // Used to divide the box size by 2
   cinder::gl::color(color);
   auto box = TextBox()
       .alignment(TextBox::CENTER)
-      .font(cinder::Font(kNormalFont, 24))
+      .font(cinder::Font(kNormalFont, kFontSize))
       .size(size)
       .color(color)
       .backgroundColor(ColorA(0, 0, 0, 0))
       .text(text);
 
   const auto box_size = box.getSize();
-  const cinder::vec2 locp = {loc.x - box_size.x / 2,
-                             loc.y - box_size.y / 2};
+  const cinder::vec2 locp = {loc.x - box_size.x / kHalfBoxSize,
+                             loc.y - box_size.y / kHalfBoxSize};
   const auto surface = box.render();
   const auto texture = cinder::gl::Texture::create(surface);
   cinder::gl::draw(texture, locp);
 }
 
 void MyApp::DrawBoard() {
+  // Redraws everything that goes on the board each frame
   for (size_t i = 0; i < kBoardSize; i++) {
     for (size_t j = 0; j < kBoardSize; j++) {
       int xPos = i * kTileLength + kTileCenter;
@@ -150,6 +169,8 @@ void MyApp::DrawBoard() {
         gl::drawSolidCircle( vec2(xPos, yPos), kCirclePieceRadius);
       }
 
+      // This draws the potential game board when the user hovers over
+      // a valid move so they can see what the outcome of their move would be
       if (potential_game_board_[i][j] == "white") {
         gl::color(Color(1,1,1));
         gl::drawSolidCircle( vec2(xPos, yPos), kCirclePieceRadius);
@@ -157,11 +178,11 @@ void MyApp::DrawBoard() {
         gl::color(Color(0,0,0));
         gl::drawSolidCircle( vec2(xPos, yPos), kCirclePieceRadius);
       }
-
     }
   }
 
   for (auto& valid_move : valid_moves_) {
+    // This draws all of the valid moves that the user can play
     int xPos = valid_move.first * kTileLength + kTileCenter;
     int yPos = valid_move.second * kTileLength + kTileCenter;
     if (is_white_turn_) {
@@ -174,8 +195,9 @@ void MyApp::DrawBoard() {
 }
 
 void MyApp::UpdateScores() {
-  white_score_ = 0;
+  white_score_ = 0; // Sets the score to 0 because the scores will be recounted.
   black_score_ = 0;
+
   for (size_t i = 0; i < kBoardSize; i++) {
     for (size_t j = 0; j < kBoardSize; j++) {
       if (game_board_[j][i] == "white") {
@@ -196,22 +218,28 @@ void MyApp::DrawScoresAndText() {
   const Color kGreen = Color(kBoardRed, kBoardGreen, kBoardBlue);
   const string white_score_text = "White: " + to_string(white_score_);
   const string black_score_text = "Black: " + to_string(black_score_);
+
+  // Prints text of the scores in the side panel
   PrintText("Welcome to Othello!",
-      kGreen, kBoxSize, vec2(860, 50));
-  PrintText(white_score_text, kGreen, kBoxSize, vec2(860, 200));
-  PrintText(black_score_text, kGreen, kBoxSize, vec2(860, 300));
+      kGreen, kBoxSize, vec2(kPanelCenterX, kBoxSize.y));
+  PrintText(white_score_text, kGreen, kBoxSize,
+      vec2(kPanelCenterX, kWhiteScoreY));
+  PrintText(black_score_text, kGreen, kBoxSize,
+      vec2(kPanelCenterX, kBlackScoreY));
+  // This boolean statement creates a string that will be shown on the screen
+  // to display which color player's turn it is
   string turn = is_white_turn_ ? "White" : "Black";
   PrintText(turn + " Turn", kGreen, kBoxSize,
-            vec2(860, 100));
+            vec2(kPanelCenterX, kTurnY));
 
   if (IsGameOver()) {
     string winner = GetWinner();
     if (winner == "tie") {
       PrintText("Game Over, it's a tie!", kGreen, kBoxSize,
-                vec2(860, 400));
+                vec2(kPanelCenterX, kGameOverY));
     } else {
       PrintText("Game Over, " + winner + " wins!", kGreen, kBoxSize,
-                vec2(860, 400));
+                vec2(kPanelCenterX, kGameOverY));
     }
   }
 }
@@ -230,13 +258,13 @@ void MyApp::PlaySound(const string& voice) {
     audio::SourceFileRef source_file =
         audio::load( app::loadAsset( "click.wav"));
     move_voice = audio::Voice::create(source_file);
-    // Start playing sound audio from file:
+    // Start playing click sound audio from file:
     move_voice->start();
   } else if (voice == "game over") {
     audio::SourceFileRef over_source_file =
         audio::load( app::loadAsset( "game_over.wav"));
     game_over_voice = audio::Voice::create(over_source_file);
-    // Start playing sound audio from file:
+    // Start playing game over audio from file:
     game_over_voice->start();
   } else {
     audio::SourceFileRef source_file =
@@ -248,12 +276,11 @@ void MyApp::PlaySound(const string& voice) {
 }
 
 void MyApp::ResetGame() {
-  white_score_ = 2;
-  black_score_ = 2;
   game_board_.clear();
   SetInitialGameBoard();
   is_white_turn_ = false;
   valid_moves_ = logic::GetValidMoves(game_board_, is_white_turn_);
+  UpdateScores();
 }
 
 void MyApp::SetInitialGameBoard() {
@@ -263,6 +290,7 @@ void MyApp::SetInitialGameBoard() {
     game_board_.push_back(v);
     potential_game_board_.push_back(v);
   }
+
   // Sets the starting 4 pieces in the middle of the board to white and black
   game_board_[kFirstStartCoord][kFirstStartCoord] = "white";
   game_board_[kFirstStartCoord][kSecondStartCoord] = "black";
@@ -278,6 +306,7 @@ void MyApp::EndGameAndAddToLeaderboard() {
                                        white_score_);
   } else {
     string loser = (winner == "white") ? "black" : "white";
+    // Adds the winner, loser, and the winning score to the sqlite scoreboard
     int winner_score = (winner == "white") ? white_score_ : black_score_;
     leaderboard_.AddWinnerToScoreBoard(winner, loser, winner_score);
   }

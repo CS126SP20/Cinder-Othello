@@ -5,7 +5,8 @@
  - **04/19/20** Set up sqlite3 and sqlite_modern_cpp libraries with project.
    - [x] Still need to update schemas and test query entering data
 
- - **04/20/20** Updated schema for database and got queries working
+ - **04/20/20** Updated schema for database and got queries working to enter 
+ data into the scoreboard.db database.
 
  - **04/21/20** Add method to print text to Cinder screen.
    - [x] Need to figure out how to display an image on to the screen; 
@@ -56,7 +57,7 @@
     - [x] Need to add a panel on the side to display scores and other
     information
     - [x] Add sound when player moves
-    - Need to start updating the README
+    - [x] Need to start updating the README
     - [x] Need to start making code testable
     - [x] Add reset functionality
     
@@ -72,7 +73,7 @@
  fully working.
     - [x] Add PROPOSAL.md
     - [x] Add more unit tests and create a helper method using maps of 
-    coordinates to strings of colors to avoid repitition
+    coordinates to strings of colors to avoid repetition
     - [x] Add more comments throughout code, where necessary
  
  - **05/01/2020** Added PROPOSAL.md to project. Improved README.md.
@@ -93,9 +94,11 @@
     - [] Add documentation in header files for methods
     - [x] Delete any unused code that is commented out
     
- - **05/05/2020**
-    - [] Review all files in the code to ensure they are up to standard
-    - [] Submit the project to Gradescope!   
+ - **05/04/2020** Added constants throughout the code to eliminate any
+ use of magic numbers and allow for repeatability. Also, added comments
+ throughout the code where the code may have been complex.   
+    
+   
     
     
  

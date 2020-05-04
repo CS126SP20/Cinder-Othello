@@ -40,6 +40,10 @@ vector<vector<string>> FlipPieces(int& x_tile_coordinate_,
 bool InBounds(int x, int y);
 
 /**
+ * This method  loops through all directions to ensure that the move the
+ * user is playing is valid. The reason this method is separate from FlipPieces
+ * is because they will be called consecutively and the pieces cannot be flipped
+ * if the move is not valid.
  *
  * @param x_tile_coordinate_
  * @param y_tile_coordinate_
@@ -52,6 +56,7 @@ bool IsMoveValid(int& x_tile_coordinate_, int& y_tile_coordinate_,
 
 /**
  *
+ *
  * @param game_board_
  * @param is_white_turn_
  * @return
@@ -63,7 +68,7 @@ vector<pair<int, int>> GetValidMoves(vector<vector<string>>& game_board_,
 // which a piece can move; used to show valid moves to the players
 const vector<int> kXChange{-1, 0, 1, -1, 1, -1, 0, 1};
 const vector<int> kYChange{-1, -1, -1, 0, 0, 1, 1, 1};
-const int kBoardSize = 8;
+const int kBoardSize = 8; // The size of the board (8x8)
 }
 
 #endif  // FINALPROJECT_LOGIC_H

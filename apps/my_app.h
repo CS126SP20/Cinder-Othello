@@ -126,14 +126,21 @@ class MyApp : public cinder::app::App {
   bool is_white_turn_ = false;
   int black_score_ = 2;
   int white_score_ = 2;
+  const int kPanelCenterX = 860; // The center x-coord of the game's panel
+  // The following four constants represent the y coordinates of places where
+  // messages are printed in the panel for the user
+  const int kTurnY = 100;
+  const int kWhiteScoreY = 200;
+  const int kBlackScoreY = 300;
+  const int kGameOverY = 400;
   const int kBoardSize = 8;
   const int kBoardBounds = getWindowBounds().getHeight();
-  const int kTileLength = getWindowBounds().getHeight()/kBoardSize;
+  const int kTileLength = getWindowBounds().getHeight() / kBoardSize;
   const int kTileCenter = kTileLength/2;
   const int kCirclePieceRadius = 35;
   // The rgb values to get a green color matching the color of the game board
   const float kBoardRed = 46.0 / 255.0;
-  const float kBoardGreen = 174.0 /255.0;
+  const float kBoardGreen = 174.0 / 255.0;
   const float kBoardBlue = 82.0 / 255.0;
   const int kFirstStartCoord = 3;
   const int kSecondStartCoord = 4;
