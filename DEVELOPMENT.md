@@ -91,14 +91,16 @@
  - **05/03/2020** Completed README.md with instructions on how to play the game
  and more instructions/details on the set-up of the game. Finalized logic.cc
  and logic.h to move appropriate methods from my_app.
-    - [] Add documentation in header files for methods
+    - [x] Add documentation in header files for methods
     - [x] Delete any unused code that is commented out
     
  - **05/04/2020** Added constants throughout the code to eliminate any
- use of magic numbers and allow for repeatability. Also, added comments
+ use of magic numbers and allow for repeatability. Also, I added comments
  throughout the code where the code may have been complex.   
     
-   
+ - **05/06/2020** Added proper documentation for methods in logic.h.
+    - [] Review all files in the code to ensure they are up to standard
+    - [] Submit the project to Gradescope!   
     
     
  

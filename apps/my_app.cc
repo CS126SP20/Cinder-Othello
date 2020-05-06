@@ -11,7 +11,6 @@ audio::VoiceRef move_voice;
 audio::VoiceRef game_over_voice;
 const char kDbPath[] = "scoreboard.db"; // Name of the scoreboard database
 
-
 // Constructor initializes the scoreboard.db database
 MyApp::MyApp(): leaderboard_{cinder::app::getAssetPath(kDbPath).string()} {}
 
