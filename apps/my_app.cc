@@ -131,6 +131,8 @@ void MyApp::mouseMove(MouseEvent event) {
   }
 }
 
+// The PrintText() method didn't need any of the private variables of the
+// SnakeApp class so it was declared as a free-floating helper function.
 template <typename C>
 void PrintText(const string& text, const C& color, const cinder::ivec2& size,
                const cinder::vec2& loc) {

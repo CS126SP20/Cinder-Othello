@@ -40,81 +40,107 @@ class MyApp : public cinder::app::App {
  public:
 
   /**
-   *
+   * The constructor for the MyApp class that initializes the sqlite database.
    */
   MyApp();
 
   /**
-   *
+   * Sets up the initial game board and sets the images for the board and reset
+   * button.
    */
   void setup() override;
 
   /**
-   *
+   * Cinder's update only used to repeat the music.
    */
   void update() override;
 
   /**
-   *
+   * The method that is called several times every seconds and is responsible
+   * for drawing on the screen.
    */
   void draw() override;
 
   /**
-   *
+   * This method has several uses. The first is for when the user is playing a
+   * move. This method reads where the user has clicked, and then verifies that
+   * it is a valid move by calling on other methods. Then, it changes the state
+   * of the game board at that coordinate to be "black" or "white". Another
+   * use is to check if the reset button was clicked. Lastly, it checks if the
+   * game is over because this is the method where the board state changes.
    */
   void mouseDown(cinder::app::MouseEvent) override;
 
   /**
-   *
+   * This method is used for the hover over functionality that allows users to
+   * see what the outcome of a potential move will be by detecting when the
+   * mouse moves.
    */
   void mouseMove(cinder::app::MouseEvent) override;
 
  private:
 
   /**
-   *
+   * This method is called by Cinder's draw method and draws the state of the
+   * board and the hover-over board (potential board) each time. This happens
+   * by looping through the 2d board vector and checking if there are white
+   * and black pieces at that x,y coordinate.
    */
   void DrawBoard();
 
   /**
-   *
+   * This method loops through the board state to count up the scores for the
+   * black and white players.
    */
   void UpdateScores();
 
   /**
+   * This method checks if the game is over (if the total score is 64, which
+   * means every square on the board is filled).
    *
-   * @return
+   * @return whether the game is over (true) or not (false)
    */
   bool IsGameOver();
 
   /**
-   *
+   * This method is responsible for drawing the scores and text in the right
+   * hand panel. The method is called by draw, and is thus being constantly
+   * being drawn.
    */
   void DrawScoresAndText();
 
   /**
+   * This method gets the winner by comparing the black and white scores when
+   * the game is over.
    *
-   * @return
+   * @return "black" if black won, "white" if white won, and "tie" if they tied
    */
   string GetWinner();
 
   /**
+   * This method is used to play any sound during the game, depending on the
+   * parameter.
    *
+   * @param voice the string that is used to represent each of the sounds
    */
   static void PlaySound(const string& voice);
 
   /**
-   *
+   * This method resets the game by clearing the game board and resetting it
+   * to the initial state of an Othello game.
    */
   void ResetGame();
 
   /**
-   *
+   * This method sets the initial game board as all empty strings in the 2d
+   * vector of string, except the middle four pieces that are constant in
+   * Othello games.
    */
   void SetInitialGameBoard();
 
   /**
-   *
+   * This method ends the game by adding the winner to the sql leaderboard, as
+   * well as the winning player's score.
    */
   void EndGameAndAddToLeaderboard();
 

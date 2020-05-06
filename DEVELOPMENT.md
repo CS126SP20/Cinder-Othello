@@ -98,9 +98,10 @@
  use of magic numbers and allow for repeatability. Also, I added comments
  throughout the code where the code may have been complex.   
     
- - **05/06/2020** Added proper documentation for methods in logic.h.
-    - [] Review all files in the code to ensure they are up to standard
-    - [] Submit the project to Gradescope!   
+ - **05/06/2020** Added proper documentation for methods in logic.h and 
+ my_app.h about each of the methods.
+    - [x] Review all files in the code to ensure they are up to standard
+    - [x] Submit the project to Gradescope!   
     
     
  
